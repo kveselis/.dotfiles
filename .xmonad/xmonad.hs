@@ -95,7 +95,7 @@ main = do
       [ ("M-p",     spawn "dmenu_run -fn 'Inconsolata 16'")
       , ("M-b",     sendMessage ToggleStruts)
       , ("M-c",     spawn "urxvtc -name weechat -e weechat")
-      , ("M-S-q",   spawn "~/.xmonad/quit-xmonad.sh" ) -- Quit xmonad nicely
+      , ("M-S-q",   spawn "~/.xmonad/scripts/quit-xmonad.sh" ) -- Quit xmonad nicely
       , ("M-S-A-q", io (exitWith ExitSuccess))
       , ("M-q",     spawn $ unlines [
              "xmonad --recompile"
