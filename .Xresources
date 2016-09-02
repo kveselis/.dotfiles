@@ -1,0 +1,113 @@
+Xcursor.theme: OpenZone_White_Slim
+
+!-------------------------------------------------------------------------------
+! Xft settings
+!-------------------------------------------------------------------------------
+
+Xft.dpi:                    96
+Xft.lcdfilter:              lcddefault
+Xft.antialias:              true
+Xft.autohint:               false
+Xft.rgba:                   rgb
+Xft.hinting:                true
+Xft.hintstyle:              hintslight
+
+
+!-------------------------------------------------------------------------------
+! URxvt settings
+! Colours lifted from Solarized (http://ethanschoonover.com/solarized)
+!-------------------------------------------------------------------------------
+
+URxvt.termName:             rxvt-unicode-256color
+!--- Real transparency
+!URxvt.depth:                32
+!URxvt.background:           rgba:0000/0000/0200/c800
+!--- Fake transparency
+URxvt.transparent:          true
+URxvt.shading:              10
+!--- 
+URxvt.geometry:             90x30
+URxvt.fading:               30
+
+URxvt.urgentOnBell:         true
+URxvt.visualBell:           true
+URxvt.loginShell:           true
+
+URxvt.saveLines:            65535
+URxvt.internalBorder:       3
+URxvt.lineSpace:            0
+! Fix font space
+URxvt.letterSpace:          -1
+
+! Fonts
+URxvt.allow_bold:           false
+URxvt.font:                 xft:Inconsolata\\-g\ for\ Powerline:style=g:size=14
+! URxvt.font:                 xft:Source\ Code\ Pro\ Medium:pixelsize=20:antialias=true:hinting=true,xft:Source\ Code\ Pro\ Medium:pixelsize=20:antialias=true:hinting=true
+! URxvt.boldFont:             xft:Inconsolata:pixelsize=20,Inconsolata\ for\ Powerline:pixelsize=16
+
+! Scrollbar
+URxvt.scrollStyle:          rxvt
+URxvt.scrollBar:            false
+
+! Perl extensions
+URxvt.perl-lib:             /usr/lib/urxvt/perl
+URxvt.perl-ext-common:      default,matcher,url-select,clipboard,resize-font,keyboard-select
+URxvt.matcher.button:       1
+URxvt.urlLauncher:          firefox
+URxvt.cutchars:             '"'()*<>[]{|}
+URxvt.resize-font.smaller:  C-Down
+URxvt.resize-font.bigger:   C-Up
+
+! Cursor
+URxvt.cursorBlink:          true
+URxvt.cursorColor:          #657b83
+URxvt.cursorUnderline:      false
+
+! Pointer
+URxvt.pointerBlank:         true
+
+
+!-----------------------------------------------
+! Color Theme
+! Source http://github.com/altercation/solarized
+! ----------------------------------------------
+
+*background: #073642
+*foreground: #93a1a1
+!!*fading: 40
+*fadeColor: #073642
+*cursorColor: #93a1a1
+*pointerColorBackground: #586e75
+*pointerColorForeground: #93a1a1
+
+!! black dark/light
+*color0: #073642
+*color8: #002b36
+
+!! red dark/light
+*color1: #dc322f
+*color9: #cb4b16
+
+!! green dark/light
+*color2: #859900
+*color10: #586e75
+
+!! yellow dark/light
+*color3: #b58900
+*color11: #657b83
+
+!! blue dark/light
+*color4: #268bd2
+*color12: #839496
+
+!! magenta dark/light
+*color5: #d33682
+*color13: #6c71c4
+
+!! cyan dark/light
+*color6: #2aa198
+*color14: #93a1a1
+
+!! white dark/light
+*color7: #eee8d5
+*color15: #fdf6e3

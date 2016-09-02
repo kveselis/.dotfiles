@@ -1,0 +1,5 @@
+[user]
+	name = Arturas Kveselis
+	email = kveselis@gmail.com
+[credential]
+	helper = cache --timeout=3600
