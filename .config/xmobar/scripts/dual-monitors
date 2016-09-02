@@ -1,0 +1,67 @@
+#!/bin/sh
+
+
+INTERNAL_DISPLAY=LVDS1
+STATE="$(xrandr)"
+EXTERNAL_DISPLAY="$(echo "$STATE" | awk -v disp=$INTERNAL_DISPLAY '$2 == "connected" && $1 != disp {print $1}')"
+EXECUTE=""
+NOTICE="not connected"
+
+external_choice() {
+    [ -z "$EXTERNAL_DISPLAY" ] && return
+
+    if [ -z "$1" ]
+    then
+        CHOICE=$(yad --list \
+                    --radiolist \
+                    --no-headers \
+                    --height 180 \
+                    --separator '' \
+                    --hide-column 3 \
+                    --print-column 3 \
+                    --text "External Monitor Position" \
+                    --column "✓" --column "Where?" --column "value" \
+                    TRUE "On the right" "right-of" \
+                    FALSE "On the left" "left-of" \
+                    FALSE "Above" "above" \
+                    FALSE "Off" "off")
+    else
+        CHOICE="$1"
+    fi
+
+    case "$CHOICE" in
+        "")
+            exit 0
+            ;;
+        "right-of"|"left-of"|"above")
+            EXECUTE="--output $EXTERNAL_DISPLAY --auto --$CHOICE $INTERNAL_DISPLAY"
+            NOTICE="$CHOICE built-in display"
+            ;;
+        "off")
+            EXECUTE="--output $EXTERNAL_DISPLAY --off"
+            NOTICE="$CHOICE"
+            ;;
+    esac
+}
+
+case "$(cat /proc/acpi/button/lid/LID/state | awk '{print $2}')" in
+    "closed")
+        INTERNAL_STATE="--off"
+        external_choice "above"
+        ;;
+    *)
+        INTERNAL_STATE="--primary"
+        external_choice
+        ;;
+esac
+
+IFS="
+"
+for disconnected in $(echo "$STATE" | awk '$2 == "disconnected" {print $1}')
+do
+    EXECUTE="$EXECUTE --output $disconnected --off"
+done
+unset IFS
+
+xrandr --output $INTERNAL_DISPLAY $INTERNAL_STATE --auto $EXECUTE
+notify-send "External Monitor" "$NOTICE"

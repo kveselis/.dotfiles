@@ -1,0 +1,42 @@
+#!/bin/sh
+
+OFF="-h string:bgcolor:#DC143C"
+ICON="<fn=2>🔈</fn>"
+MUTE_ICON="<fn=2>🔇</fn>"
+PIPE=~/.config/xmobar/volume-control
+[ -p "$PIPE" ] || mkfifo "$PIPE"
+
+if [ "$1" = "mic" ]; then
+    mic="$(amixer set Capture toggle | tail -n1 | sed -E 's/.*\[(on|off)\]/\1/')"
+    notify-send -r 99 $([ "$mic" = "off" ] && echo "$OFF") "Microphone" "$mic"
+    exit 0
+fi
+
+step=5
+
+if [ $# -eq 1 ]; then
+    case $1 in
+        "up")
+            pulseaudio-ctl up ;;
+        "down")
+            pulseaudio-ctl down ;;
+        "toggle")
+            pulseaudio-ctl mute ;;
+    esac
+fi
+
+output="$(pulseaudio-ctl | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g")"
+muted="$(echo "$output" | grep "Is sink muted" | cut -d' ' -f 9)"
+[ -z "$muted" ] && muted="yes"
+current="$(echo "$output" | grep "Volume level" | cut -d' ' -f 9)"
+[ -z "$current" ] && current="0"
+
+level="$(vbar $current)"
+
+if [ "$muted" = "yes" ]; then
+    notify-send $OFF -r 99 "Volume" "Muted"
+    echo "<fc=crimson>$MUTE_ICON $level</fc>" > "$PIPE"
+else
+    notify-send -r 99 -h int:value:$current "Volume"
+    echo "$ICON $level" > "$PIPE"
+fi

@@ -1,0 +1,35 @@
+#!/bin/sh
+
+getInterface() {
+    ip route list scope global | grep 'default via .* dev' | cut -d ' ' -f 5
+}
+isConnected() {
+    test -e /sys/class/net/$1/carrier
+}
+getType() {
+    if [ "$(cat /sys/class/net/$1/type)" = "1" ]; then
+        if [ -e /sys/class/net/$1/wireless -o -e /sys/class/net/$1/phy80211 ]; then
+            printf 'wireless'
+            return
+        fi
+    fi
+    printf 'wired'
+}
+getQuality() {
+    current="$(iw dev $1 link | awk '$1 == "signal:" {print 100 - (0 - $2 - 35)*100/60}')" #scale -35 -95 dBm
+    #current=$(sudo iwconfig 2>/dev/null | grep 'Link Quality' | cut -d '=' -f 2 | cut -d ' ' -f 1)
+    #current=$(echo "$current*100" | bc -l | cut -d. -f 1)
+    printf %s "$(vbar $current)"
+}
+
+INTERFACE=$(getInterface)
+
+if isConnected $INTERFACE; then
+    TYPE=$(getType $INTERFACE)
+    case "$TYPE" in
+        'wireless') printf '<fn=2>📶</fn> %s' "$(getQuality $INTERFACE)" ;;
+        'wired') printf '<fn=2>⧮</fn> ⋯ ' ;;
+    esac
+else
+    printf '<fn=2>📶</fn> <fc=red>x</fc>'
+fi

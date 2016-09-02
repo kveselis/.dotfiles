@@ -1,0 +1,35 @@
+Config { font = "xft:DejaVu Sans:style=Book:pixelsize=16:antialias=true"
+  , bgColor = "#002b36"
+  , fgColor = "#657b83"
+  , border = NoBorder
+  , borderColor = "black"
+  , hideOnStart = False
+  , persistent = True
+  , position = Top
+  , lowerOnStart = True
+  , iconRoot = "/home/artis/.xmonad/icons"
+  , commands = [ Run Network "enp0s3" ["-L","0","-H","32","-n","green","-h","#ff4444", "-t", "<fc=#6c71c4><icon=net-wired.xbm/></fc> <rx>K<icon=arrow_down.xbm/> <tx>K<icon=arrow_up.xbm/>"] 10 
+               , Run Cpu ["-L","3","-H","50","-n","#657b83","-h","#657b83", "-t", "<fc=#6c71c4><icon=cpu.xbm/></fc> <total>%"] 10
+               , Run Memory ["-t","<fc=#268bd2><icon=mem.xbm/></fc> <usedratio>%"] 10
+               , Run Date "<fc=#93a1a1>%_d.%m.%Y %H:%M</fc>" "date" 10
+	       , Run Battery [
+                    "-t", "<acstatus> <left>%",
+                    "-L", "15",
+                    "-H", "30",
+                    "-l", "#dc322f",
+                    "-n", "#b58900",
+                    "-h", "#586e75",
+                    "--",
+                    "-o", "<fc=#2aa198><icon=power-bat.xbm/></fc>",
+                    "-O", "<fc=#859900><icon=power-ac.xbm/></fc>",
+                    "-i", "<fc=#b58900><icon=power-ac.xbm/></fc>"
+                    ] 100
+               -- volume monitor
+--               , Run Volume "default" "Master" ["--template"	,"Vol: <volume>%"
+--                 ] 10
+               , Run UnsafeStdinReader
+                 ]
+  , sepChar = "%"
+  , alignSep = "}{"
+  , template = " %UnsafeStdinReader% }{ %battery% %cpu% %memory% %enp0s3% <fc=#2aa198><icon=vol-hi.xbm/></fc> | %date% "
+}
