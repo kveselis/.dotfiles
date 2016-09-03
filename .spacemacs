@@ -28,7 +28,7 @@ values."
      emacs-lisp
      restclient
      git
-     ;; markdown
+     markdown
      ;; org
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -130,7 +130,7 @@ values."
                                :size 16
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.3)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'

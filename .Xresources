@@ -41,8 +41,8 @@ URxvt.letterSpace:          -1
 
 ! Fonts
 URxvt.allow_bold:           false
-URxvt.font:                 xft:Inconsolata\\-g\ for\ Powerline:style=g:size=14
-! URxvt.font:                 xft:Source\ Code\ Pro\ Medium:pixelsize=20:antialias=true:hinting=true,xft:Source\ Code\ Pro\ Medium:pixelsize=20:antialias=true:hinting=true
+URxvt.font:                 xft:Inconsolata\\-g\ for\ Powerline:style=g:pixelsize=16
+! URxvt.font:                 xft:Source\ Code\ Pro\ Medium:pixelsize=16:antialias=true:hinting=true
 ! URxvt.boldFont:             xft:Inconsolata:pixelsize=20,Inconsolata\ for\ Powerline:pixelsize=16
 
 ! Scrollbar
