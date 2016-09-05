@@ -37,14 +37,14 @@ import System.Exit
 
 myModMask            = mod4Mask
 myTerminal           = "urxvt"
-myNormalBorderColor  = solarizedBase01 
+myNormalBorderColor  = solarizedBase01
 myFocusedBorderColor = solarizedBase1
 myBorderWidth        = 0
 myIconDir            = "/home/artis/.xmonad/icons"
 
 myTitleLength = 90
 
-myWorkspaces = ["1:dev","2:web","3:term","4:chat","5:","6","7","8","9"]
+myWorkspaces = ["①","②","③","④","⑤","⑥","⑦","⑧","⑨"]
 
 
 -- LibNotify urgency hook
@@ -66,29 +66,29 @@ main = do
       , normalBorderColor  = myNormalBorderColor
       , focusedBorderColor = myFocusedBorderColor
       , workspaces         = myWorkspaces
-      , startupHook        = myStartupHook 
+      , startupHook        = myStartupHook
       , manageHook         = manageSpawn <+> manageDocks <+> myManageHook <+> manageHook defaultConfig
       , layoutHook         = smartBorders $ myLayoutHook
       , handleEventHook    = mconcat [docksEventHook, handleEventHook defaultConfig]
       , logHook            = dynamicLogWithPP xmobarPP
            { ppOutput          = hPutStrLn xmproc
            , ppTitle           = xmobarColor solarizedYellow "" . shorten myTitleLength
-           , ppCurrent         = xmobarColor solarizedBase1 solarizedBase03 . \s -> "●"  -- xmobarColor solarizedBase1 "" . wrap "" ""
+           , ppCurrent         = xmobarColor solarizedBase1 "" . wrap "" "" -- xmobarColor solarizedBase1 solarizedBase03 . \s -> "●"  -- xmobarColor solarizedBase1 "" . wrap "" ""
            , ppVisible         = xmobarColor solarizedBlue solarizedBase03 . \s -> "◉"
            , ppHidden          = xmobarColor solarizedBase01 solarizedBase03 . \s -> "●"
            , ppHiddenNoWindows = xmobarColor solarizedBase02 solarizedBase03  . \s -> "○"
            , ppSep             = xmobarColor solarizedBase1 "" " | "
 	   , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> "●" --"" . wrap "" ""
-           , ppLayout          = const "" .
+           , ppLayout          =
 	              (\x -> case x of
-                         "Full"                 -> "^i(" ++ myIconDir ++ "/layout-full.xpm)"
+                         "Full"                 -> "<icon=" ++ myIconDir ++ "/layout-full.xpm/>"
                          "Mirror Tall"          -> "^i(" ++ myIconDir ++ "/layout-mirror-black.xpm)"
                          "Mirror ResizableTall" -> "^i(" ++ myIconDir ++ "/layout-mirror-top.xpm)"
                          "Tall"                 -> "^i(" ++ myIconDir ++ "/layout-tall-black.xpm)"
                          "ResizableTall"        -> "^i(" ++ myIconDir ++ "/layout-tall-left.xpm)"
                          "Simple Float"         -> "~"
                          _                      -> pad x
-                      )   
+                      )
            }
       }
       `additionalKeysP`
@@ -120,7 +120,6 @@ myStartupHook = do
 --   spawnOnce "chromium"
 --   spawnOnce "urxvt"
 --   spawnOnce "urxvtc -name weechat -e weechat"
-  
 
 myManageHook = composeAll
    [ className =? "chromium" --> doShift "2:web"
