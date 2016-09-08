@@ -40,11 +40,11 @@ myTerminal           = "urxvt"
 myNormalBorderColor  = solarizedBase01
 myFocusedBorderColor = solarizedBase1
 myBorderWidth        = 0
-myIconDir            = "/home/artis/.xmonad/icons"
+myIconDir            = "/home/artis/.xmonad/icons/"
 
 myTitleLength = 90
 
-myWorkspaces = ["①","②","③","④","⑤","⑥","⑦","⑧","⑨"]
+myWorkspaces = ["dev","web","term","chat","5","6","7","8","play"]
 
 
 -- LibNotify urgency hook
@@ -73,19 +73,19 @@ main = do
       , logHook            = dynamicLogWithPP xmobarPP
            { ppOutput          = hPutStrLn xmproc
            , ppTitle           = xmobarColor solarizedYellow "" . shorten myTitleLength
-           , ppCurrent         = xmobarColor solarizedBase1 "" . wrap "" "" -- xmobarColor solarizedBase1 solarizedBase03 . \s -> "●"  -- xmobarColor solarizedBase1 "" . wrap "" ""
-           , ppVisible         = xmobarColor solarizedBlue solarizedBase03 . \s -> "◉"
+           , ppCurrent         = xmobarColor solarizedBlue solarizedBase03 . \s -> "●"
+           , ppVisible         = xmobarColor solarizedBase1 solarizedBase03 . \s -> "●"
            , ppHidden          = xmobarColor solarizedBase01 solarizedBase03 . \s -> "●"
            , ppHiddenNoWindows = xmobarColor solarizedBase02 solarizedBase03  . \s -> "○"
-           , ppSep             = xmobarColor solarizedBase1 "" " | "
-	   , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> "●" --"" . wrap "" ""
+           , ppSep             = xmobarColor solarizedBase01 "" "    "
+	   , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> "●"
            , ppLayout          =
 	              (\x -> case x of
-                         "Full"                 -> "<icon=" ++ myIconDir ++ "/layout-full.xpm/>"
-                         "Mirror Tall"          -> "^i(" ++ myIconDir ++ "/layout-mirror-black.xpm)"
-                         "Mirror ResizableTall" -> "^i(" ++ myIconDir ++ "/layout-mirror-top.xpm)"
-                         "Tall"                 -> "^i(" ++ myIconDir ++ "/layout-tall-black.xpm)"
-                         "ResizableTall"        -> "^i(" ++ myIconDir ++ "/layout-tall-left.xpm)"
+                         "Full"  -> "<icon=" ++ myIconDir ++ "layout-full.xbm/>"
+                         "Mirror SmartSpacing 10 Tall" -> "<icon=" ++ myIconDir ++ "layout-mirror-bottom.xbm/>"
+                         "Mirror ResizableTall" -> "<icon=" ++ myIconDir ++ "layout-mirror-top.xbm/>"
+                         "SmartSpacing 10 Tall" -> "<icon=" ++ myIconDir ++ "layout-tall-right.xbm/>"
+                         "ResizableTall"        -> "<icon=" ++ myIconDir ++ "layout-tall-left.xbm/>"
                          "Simple Float"         -> "~"
                          _                      -> pad x
                       )

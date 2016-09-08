@@ -1,4 +1,4 @@
-Config { font = "xft:DejaVu Sans:style=Book:pixelsize=16:antialias=true"
+Config { font = "xft:DejaVu Sans:style=Book:pixelsize=18:antialias=true"
   , bgColor = "#002b36"
   , fgColor = "#657b83"
   , border = NoBorder
@@ -31,5 +31,5 @@ Config { font = "xft:DejaVu Sans:style=Book:pixelsize=16:antialias=true"
                  ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = " %UnsafeStdinReader% }{ %battery% %cpu% %memory% %enp0s3% <fc=#2aa198><icon=vol-hi.xbm/></fc> | %date% "
+  , template = " %UnsafeStdinReader% }{ %battery% %cpu% %memory% %enp0s3% <fc=#2aa198><icon=vol-hi.xbm/></fc>    %date% "
 }
