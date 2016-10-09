@@ -20,11 +20,11 @@ Xft.hintstyle:              hintslight
 
 URxvt.termName:             rxvt-unicode-256color
 !--- Real transparency
-!URxvt.depth:                32
-!URxvt.background:           rgba:0000/0000/0200/c800
+URxvt.depth:                32
+URxvt.background:           rgba:0000/0000/0200/c800
 !--- Fake transparency
-URxvt.transparent:          true
-URxvt.shading:              10
+!URxvt.transparent:          true
+!URxvt.shading:              10
 !--- 
 URxvt.geometry:             90x30
 URxvt.fading:               30

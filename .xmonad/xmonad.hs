@@ -1,8 +1,8 @@
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
---import Graphics.X11.ExtraTypes.XF86
---import Control.Monad
+import Graphics.X11.ExtraTypes.XF86
+import Control.Monad
 import XMonad.Util.NamedWindows
 
 import XMonad
@@ -109,7 +109,10 @@ main = do
         )
        -- Brightness Keys
       , ("<XF86MonBrightnessUp>"  , spawn "xbacklight + 5 -time 100 -steps 1")
-      , ("<XF86MonBrightnessDown>", spawn "xbacklight - 5 -time 100 -steps 1")]
+      , ("<XF86MonBrightnessDown>", spawn "xbacklight - 5 -time 100 -steps 1")
+      , ("<XF86AudioLowerVolume>", spawn "amixer -q -D pulse set Master 2%- unmute")
+      , ("<XF86AudioRaiseVolume>", spawn "amixer -q -D pulse set Master 2%+ unmute")
+      , ("<XF86AudioMute>", spawn "amixer -q -D pulse set Master toggle")]
 
 
 myStartupHook = do

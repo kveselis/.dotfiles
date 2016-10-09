@@ -39,11 +39,11 @@ if which urxvtd >/dev/null 2>&1; then
 	urxvtd -f -o -q
 fi
 
-VBoxClient --clipboard 
-VBoxClient --draganddrop 
-VboxClient --seamless 
-VBoxClient --display 
-VBoxClient --checkhostversion
+#VBoxClient --clipboard 
+#VBoxClient --draganddrop 
+#VboxClient --seamless 
+#VBoxClient --display 
+#VBoxClient --checkhostversion
 
 #xrandr -s 1920x1080
 xset r rate 200 30
@@ -56,6 +56,8 @@ xbanish &
 # now done in xmonad.hs
 # feh --bg-scale ~/Pictures/bg1.jpg
 
+# not working on VM
+compton -b
 
 #trayer --edge bottom --align right --SetDockType true --expand true --transparent true --alpha 0 --tint 0x000000 --height 12 --width 10  &
 
@@ -63,5 +65,3 @@ start-pulseaudio-x11 &
 
 exec xmonad
 
-# not working on VM
-# compton -b

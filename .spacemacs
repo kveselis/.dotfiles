@@ -126,7 +126,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata-g";"InconsolataGo";"PragmataPro";"Menlo";"Consolas";"Source Code Pro";"DejaVu Sans Mono";"Bitstream Vera Sans Mono";"Anonymous Pro";"Monaco";"Droid Sans Mono";"Input Mono"
+   dotspacemacs-default-font '("DejaVu Sans Mono";"Inconsolata-g";"InconsolataGo";"PragmataPro";"Menlo";"Consolas";"Source Code Pro";"DejaVu Sans Mono";"Bitstream Vera Sans Mono";"Anonymous Pro";"Monaco";"Droid Sans Mono";"Input Mono"
                                :size 16
                                :weight normal
                                :width normal
@@ -327,3 +327,17 @@ layers configuration. You are free to put any user code."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (ws-butler window-numbering which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline powerline smeargle slim-mode scss-mode sass-mode restclient restart-emacs rainbow-delimiters powershell popwin persp-mode pcre2el paradox orgit org org-plus-contrib org-bullets open-junk-file ob-http neotree mwim move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lorem-ipsum linum-relative link-hint less-css-mode jade-mode intero info+ indent-guide ido-vertical-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers parent-mode highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile helm-hoogle helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets haml-mode google-translate golden-ratio gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-mix flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree erlang emmet-mode elm-mode elisp-slime-nav dumb-jump f diminish define-word company-web web-completion-data company-statistics company-ghci company-ghc ghc haskell-mode company-cabal company-auctex column-enforce-mode cmm-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit s peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue clojure-mode bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex alchemist company dash elixir-mode pkg-info epl aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup quelpa package-build))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

@@ -12,3 +12,5 @@ export HISTSIZE=
 
 #. /usr/lib/python3.5/site-packages/powerline/bindings/bash/powerline.sh
 alias dotfiles='/usr/bin/git --git-dir=/home/artis/.dotfiles/ --work-tree=/home/artis'
+
+eval "$(stack --bash-completion-script stack)"

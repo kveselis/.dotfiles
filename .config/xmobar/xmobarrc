@@ -25,8 +25,8 @@ Config { font = "xft:DejaVu Sans:style=Book:pixelsize=18:antialias=true"
                     "-i", "<fc=#b58900><icon=power-ac.xbm/></fc>"
                     ] 100
                -- volume monitor
---               , Run Volume "default" "Master" ["--template"	,"Vol: <volume>%"
---                 ] 10
+               --, Run Volume "default" "Master" ["--template"	,"Vol: <volume>%"
+               --  ] 10
                , Run UnsafeStdinReader
                  ]
   , sepChar = "%"
