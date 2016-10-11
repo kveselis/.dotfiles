@@ -39,11 +39,11 @@ if which urxvtd >/dev/null 2>&1; then
 	urxvtd -f -o -q
 fi
 
-#VBoxClient --clipboard 
-#VBoxClient --draganddrop 
-#VboxClient --seamless 
-#VBoxClient --display 
-#VBoxClient --checkhostversion
+VBoxClient --clipboard 
+VBoxClient --draganddrop 
+VboxClient --seamless 
+VBoxClient --display 
+VBoxClient --checkhostversion
 
 #xrandr -s 1920x1080
 xset r rate 200 30
