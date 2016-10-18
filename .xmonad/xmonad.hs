@@ -57,6 +57,7 @@ instance UrgencyHook LibNotifyUrgencyHook where
         safeSpawn "notify-send" [show name, "Urgent window"]
 
 
+
 main = do
    xmproc <- spawnPipe "xmobar"
    xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh defaultConfig
@@ -101,9 +102,9 @@ main = do
              "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"
-           , "    notify-send -u low XMonad 'Recompiled and restarted.'"
+           , "    notify-send -r 99 -u low XMonad 'Recompiled and restarted.'"
            , "else"
-           , "    notify-send -u critical \"XMonad recompilation failed\" \"\n$(cat ~/.xmonad/xmonad.errors)\""
+           , "    notify-send -r 99 -u critical \"XMonad recompilation failed\" \"\n$(cat ~/.xmonad/xmonad.errors)\""
            , "fi"
            ]
         )
@@ -118,7 +119,6 @@ main = do
 myStartupHook = do
    setDefaultCursor xC_left_ptr
    spawnOnce "feh --bg-scale ~/Pictures/bg1.jpg"
-   setWMName "LG3D"
 --   spawnOnce "emacs"
 --   spawnOnce "chromium"
 --   spawnOnce "urxvt"

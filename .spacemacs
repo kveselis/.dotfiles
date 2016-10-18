@@ -126,7 +126,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("DejaVu Sans Mono";"Inconsolata-g";"InconsolataGo";"PragmataPro";"Menlo";"Consolas";"Source Code Pro";"DejaVu Sans Mono";"Bitstream Vera Sans Mono";"Anonymous Pro";"Monaco";"Droid Sans Mono";"Input Mono"
+   dotspacemacs-default-font '("DejaVu Sans Mono for Powerline";"Inconsolata for powerline";"Source Code Pro for Powerline";"InconsolataGo";"PragmataPro";"Menlo";"Consolas";"Source Code Pro";"DejaVu Sans Mono";"Bitstream Vera Sans Mono";"Anonymous Pro";"Monaco";"Droid Sans Mono";"Input Mono"
                                :size 16
                                :weight normal
                                :width normal
@@ -161,15 +161,15 @@ values."
    dotspacemacs-default-layout-name "Default"
    ;; If non nil the default layout name is displayed in the mode-line.
    ;; (default nil)
-   dotspacemacs-display-default-layout t
+   dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
-   dotspacemacs-auto-save-file-location 'cache
+   Dotspacemacs-auto-save-file-location 'cache
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
    ;; If non nil then `ido' replaces `helm' for some commands. For now only
@@ -263,7 +263,9 @@ in `dotspacemacs/user-config'."
   (add-to-list 'exec-path "~/AppData/Local/Programs/stack/x86_64-windows/ghc-7.10.3/bin/")
   (add-to-list 'exec-path "c:/Program Files (x86)/Aspell/bin/")
 
-  (setq-default line-spacing 0)
+  (set-fontset-font t '(#x0000 . #xF5FF) "Source Code Pro for Powerline")
+
+  (setq-default line-spacing 2)
 )
 
 (defun dotspacemacs/user-config ()
