@@ -126,8 +126,13 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
+<<<<<<< HEAD
    dotspacemacs-default-font '("DejaVu Sans Mono";"Source Code Pro"; "Inconsolata-g";"InconsolataGo";"PragmataPro";"Menlo";"Consolas";"DejaVu Sans Mono";"Bitstream Vera Sans Mono";"Anonymous Pro";"Monaco";"Droid Sans Mono";"Input Mono"
                                :size 17
+=======
+   dotspacemacs-default-font '("DejaVu Sans Mono for Powerline";"Inconsolata for powerline";"Source Code Pro for Powerline";"InconsolataGo";"PragmataPro";"Menlo";"Consolas";"Source Code Pro";"DejaVu Sans Mono";"Bitstream Vera Sans Mono";"Anonymous Pro";"Monaco";"Droid Sans Mono";"Input Mono"
+                               :size 16
+>>>>>>> refs/remotes/origin/master
                                :weight normal
                                :width normal
                                :powerline-scale 1.3)
@@ -161,15 +166,15 @@ values."
    dotspacemacs-default-layout-name "Default"
    ;; If non nil the default layout name is displayed in the mode-line.
    ;; (default nil)
-   dotspacemacs-display-default-layout t
+   dotspacemacs-display-default-layout nil
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
    ;; file stored in the cache directory and `nil' to disable auto-saving.
    ;; (default 'cache)
-   dotspacemacs-auto-save-file-location 'cache
+   Dotspacemacs-auto-save-file-location 'cache
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
    ;; If non nil then `ido' replaces `helm' for some commands. For now only
@@ -263,6 +268,11 @@ in `dotspacemacs/user-config'."
   (add-to-list 'exec-path "~/AppData/Local/Programs/stack/x86_64-windows/ghc-7.10.3/bin/")
   (add-to-list 'exec-path "c:/Program Files (x86)/Aspell/bin/")
 
+<<<<<<< HEAD
+=======
+  (set-fontset-font t '(#x0000 . #xF5FF) "Source Code Pro for Powerline")
+
+>>>>>>> refs/remotes/origin/master
   (setq-default line-spacing 2)
 )
 
@@ -334,11 +344,19 @@ layers configuration. You are free to put any user code."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
+<<<<<<< HEAD
     (ws-butler web-mode spacemacs-theme spaceline persp-mode open-junk-file neotree macrostep leuven-theme indent-guide hindent help-fns+ helm-themes helm-projectile helm-descbinds helm-ag haskell-snippets google-translate evil-surround evil-search-highlight-persist evil-mc evil-matchit evil-iedit-state iedit emmet-mode elm-mode f clj-refactor cider-eval-sexp-fu cider auto-yasnippet alchemist elixir-mode ace-window ace-link ace-jump-helm-line smartparens undo-tree haskell-mode projectile helm helm-core markdown-mode magit git-commit with-editor hydra s package-build which-key window-numbering volatile-highlights vi-tilde-fringe use-package tagedit smooth-scrolling smeargle slim-mode shm scss-mode sass-mode ruby-end restclient restart-emacs rainbow-delimiters queue quelpa powershell powerline popwin pkg-info pcre2el paredit paradox page-break-lines orgit multiple-cursors move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum linum-relative less-css-mode jade-mode info+ inflections ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-swoop helm-mode-manager helm-make helm-gitignore helm-flx helm-css-scss helm-company helm-c-yasnippet golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger gh-md flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-numbers evil-nerd-commenter evil-magit evil-lisp-state evil-indent-plus evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu erlang elisp-slime-nav edn define-word company-web company-statistics company-quickhelp company-ghc company-cabal company-auctex cmm-mode clojure-mode clean-aindent-mode buffer-move bracketed-paste avy auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ac-ispell))))
+=======
+    (pug-mode ws-butler window-numbering which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline powerline smeargle slim-mode scss-mode sass-mode restclient restart-emacs rainbow-delimiters powershell popwin persp-mode pcre2el paradox orgit org org-plus-contrib org-bullets open-junk-file ob-http neotree mwim move-text mmm-mode markdown-toc markdown-mode magit-gitflow macrostep lorem-ipsum linum-relative link-hint less-css-mode jade-mode intero info+ indent-guide ido-vertical-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers parent-mode highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile helm-hoogle helm-gitignore request helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag haskell-snippets haml-mode google-translate golden-ratio gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md flycheck-mix flycheck flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree erlang emmet-mode elm-mode elisp-slime-nav dumb-jump f diminish define-word company-web web-completion-data company-statistics company-ghci company-ghc ghc haskell-mode company-cabal company-auctex column-enforce-mode cmm-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit s peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider seq spinner queue clojure-mode bind-map bind-key auto-yasnippet yasnippet auto-highlight-symbol auto-compile packed auctex alchemist company dash elixir-mode pkg-info epl aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup quelpa package-build))))
+>>>>>>> refs/remotes/origin/master
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+<<<<<<< HEAD
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+=======
+ )
+>>>>>>> refs/remotes/origin/master

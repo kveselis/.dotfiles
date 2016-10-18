@@ -3,9 +3,9 @@
 OFF="-h string:bgcolor:#DC143C"
 ICON="<fn=2>🔈</fn>"
 MUTE_ICON="<fn=2>🔇</fn>"
-PIPE=~/.config/xmobar/volume-control
-[ -p "$PIPE" ] || mkfifo "$PIPE"
+PIPE=$XDG_RUNTIME_DIR/volume-display
 
+[ -p "$PIPE" ] || mkfifo "$PIPE"
 if [ "$1" = "mic" ]; then
     mic="$(amixer set Capture toggle | tail -n1 | sed -E 's/.*\[(on|off)\]/\1/')"
     notify-send -r 99 $([ "$mic" = "off" ] && echo "$OFF") "Microphone" "$mic"
@@ -31,8 +31,7 @@ muted="$(echo "$output" | grep "Is sink muted" | cut -d' ' -f 9)"
 current="$(echo "$output" | grep "Volume level" | cut -d' ' -f 9)"
 [ -z "$current" ] && current="0"
 
-level="$(vbar $current)"
-
+level="$(./vbar $current)"
 if [ "$muted" = "yes" ]; then
     notify-send $OFF -r 99 "Volume" "Muted"
     echo "<fc=crimson>$MUTE_ICON $level</fc>" > "$PIPE"
