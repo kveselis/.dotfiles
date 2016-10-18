@@ -126,8 +126,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata-g";"InconsolataGo";"PragmataPro";"Menlo";"Consolas";"Source Code Pro";"DejaVu Sans Mono";"Bitstream Vera Sans Mono";"Anonymous Pro";"Monaco";"Droid Sans Mono";"Input Mono"
-                               :size 16
+   dotspacemacs-default-font '("DejaVu Sans Mono";"Source Code Pro"; "Inconsolata-g";"InconsolataGo";"PragmataPro";"Menlo";"Consolas";"DejaVu Sans Mono";"Bitstream Vera Sans Mono";"Anonymous Pro";"Monaco";"Droid Sans Mono";"Input Mono"
+                               :size 17
                                :weight normal
                                :width normal
                                :powerline-scale 1.3)
@@ -263,7 +263,7 @@ in `dotspacemacs/user-config'."
   (add-to-list 'exec-path "~/AppData/Local/Programs/stack/x86_64-windows/ghc-7.10.3/bin/")
   (add-to-list 'exec-path "c:/Program Files (x86)/Aspell/bin/")
 
-  (setq-default line-spacing 0)
+  (setq-default line-spacing 2)
 )
 
 (defun dotspacemacs/user-config ()
@@ -327,3 +327,18 @@ layers configuration. You are free to put any user code."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (ws-butler web-mode spacemacs-theme spaceline persp-mode open-junk-file neotree macrostep leuven-theme indent-guide hindent help-fns+ helm-themes helm-projectile helm-descbinds helm-ag haskell-snippets google-translate evil-surround evil-search-highlight-persist evil-mc evil-matchit evil-iedit-state iedit emmet-mode elm-mode f clj-refactor cider-eval-sexp-fu cider auto-yasnippet alchemist elixir-mode ace-window ace-link ace-jump-helm-line smartparens undo-tree haskell-mode projectile helm helm-core markdown-mode magit git-commit with-editor hydra s package-build which-key window-numbering volatile-highlights vi-tilde-fringe use-package tagedit smooth-scrolling smeargle slim-mode shm scss-mode sass-mode ruby-end restclient restart-emacs rainbow-delimiters queue quelpa powershell powerline popwin pkg-info pcre2el paredit paradox page-break-lines orgit multiple-cursors move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum linum-relative less-css-mode jade-mode info+ inflections ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-swoop helm-mode-manager helm-make helm-gitignore helm-flx helm-css-scss helm-company helm-c-yasnippet golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger gh-md flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-numbers evil-nerd-commenter evil-magit evil-lisp-state evil-indent-plus evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu erlang elisp-slime-nav edn define-word company-web company-statistics company-quickhelp company-ghc company-cabal company-auctex cmm-mode clojure-mode clean-aindent-mode buffer-move bracketed-paste avy auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
