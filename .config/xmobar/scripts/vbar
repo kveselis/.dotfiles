@@ -11,8 +11,8 @@ value="$(echo "$value" | cut -d. -f1)"
 
 if [ -z "$value" ]; then
     bar=☓
-elif [ "$value" -le "0" ]; then
-    bar=
+elif [ "$value" -eq "0" ]; then
+    bar="x"
 elif [ "$value" -lt "13" ]; then
     bar=▁
 elif [ "$value" -lt "25" ]; then

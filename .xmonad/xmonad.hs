@@ -24,6 +24,7 @@ import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.EwmhDesktops           -- for quit-monad.sh and notify-send, wmctrl
 
 import XMonad.Actions.SpawnOn
+import XMonad.Actions.CycleWS
 import XMonad.Util.SpawnOnce
 
 import XMonad.Util.Run
@@ -44,7 +45,7 @@ myIconDir            = "/home/artis/.xmonad/icons/"
 
 myTitleLength = 90
 
-myWorkspaces = ["dev","web","term","chat","5","6","7","8","play"]
+myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 
 
 -- LibNotify urgency hook
@@ -93,12 +94,20 @@ main = do
            }
       }
       `additionalKeysP`
-      [ ("M-p",     spawn "dmenu_run -fn 'Inconsolata 16'")
-      , ("M-b",     sendMessage ToggleStruts)
-      , ("M-c",     spawn "urxvtc -name weechat -e weechat")
-      , ("M-S-q",   spawn "~/.xmonad/scripts/quit-xmonad.sh" ) -- Quit xmonad nicely
-      , ("M-S-A-q", io (exitWith ExitSuccess))
-      , ("M-q",     spawn $ unlines [
+      [ ("M-p",             spawn "dmenu_run -fn 'Inconsolata 16'")
+      , ("M-S-p",           spawn "passmenu -fn 'Inconsolata 16'")
+      , ("M-b",             sendMessage ToggleStruts)
+      , ("M-c",             spawn "urxvtc -name weechat -e weechat")
+      , ("M-o",             spawn "urxvtc -name ncmpcpp -e ncmpcpp")
+      , ("M-S-l",           spawn "slock") -- Lock the screen
+      , ("M-S-q",           spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Quit xmonad nicely
+      , ("M-S-<Backspace>", spawn "/bin/systemctl suspend")
+      , ("M-S-<Delete>",    spawn "/bin/systemctl hibernate")
+      , ("M-S-e",           spawn "emacs")
+      , ("M-S-g",           spawn "chromium")
+      , ("M-S-f",           spawn "firefox")
+      , ("M-S-A-q",         io (exitWith ExitSuccess))
+      , ("M-q",             spawn $ unlines [
              "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"
@@ -109,30 +118,39 @@ main = do
            ]
         )
        -- Brightness Keys
+      , ("<XF86Display>",           spawn "arandr")
       , ("<XF86MonBrightnessUp>"  , spawn "xbacklight + 5 -time 100 -steps 1")
       , ("<XF86MonBrightnessDown>", spawn "xbacklight - 5 -time 100 -steps 1")
-      , ("<XF86AudioLowerVolume>", spawn "amixer -q -D pulse set Master 2%- unmute")
-      , ("<XF86AudioRaiseVolume>", spawn "amixer -q -D pulse set Master 2%+ unmute")
-      , ("<XF86AudioMute>", spawn "amixer -q -D pulse set Master toggle")]
+      , ("<XF86AudioLowerVolume>",  spawn "amixer -q -D pulse set Master 2%- unmute")
+      , ("<XF86AudioRaiseVolume>",  spawn "amixer -q -D pulse set Master 2%+ unmute")
+      , ("<XF86AudioMute>",         spawn "amixer -q -D pulse set Master toggle")
+
+       -- CycleWS setup, keybindings for 
+      , ("M-C-<R>", nextWS)
+      , ("M-C-<L>", prevWS)
+      , ("M-S-<R>", shiftToNext >> nextWS)
+      , ("M-S-<L>", shiftToPrev >> prevWS)
+      , ("M-<R>",   shiftNextScreen)
+      , ("M-<L>",   shiftPrevScreen)
+      , ("M-z",     toggleWS)
+      ]
 
 
 myStartupHook = do
-   setDefaultCursor xC_left_ptr
-   spawnOnce "feh --bg-scale ~/Pictures/bg1.jpg"
---   spawnOnce "emacs"
---   spawnOnce "chromium"
---   spawnOnce "urxvt"
---   spawnOnce "urxvtc -name weechat -e weechat"
+  spawnOnce "xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto"
+  spawn "feh --bg-fill ~/Pictures/bg1.jpg"
+  setDefaultCursor xC_left_ptr
 
 myManageHook = composeAll
-   [ className =? "chromium" --> doShift "2:web"
-   , className =? "urxvt" --> doShift "3:term"
-   , resource  =? "weechat" --> doShift "4:chat"
+   [ className =? "chromium" --> doShift "2"
+   , className =? "urxvt" --> doShift "3"
+   , resource  =? "weechat" --> doShift "4"
+   , resource  =? "XXkb" --> doIgnore
    ]
 
 myLayoutHook = avoidStruts
-   $ onWorkspace "1:dev" (Full ||| tiled ||| Mirror tiled)
-   $ onWorkspace "2:web" (Full ||| tiled ||| Mirror tiled)
+   $ onWorkspace "1" (Full ||| tiled ||| Mirror tiled)
+   $ onWorkspace "2" (Full ||| tiled ||| Mirror tiled)
    $ layouts
    where layouts = tiled ||| Mirror tiled ||| Full
          tiled   = smartSpacing 10 $ gaps [(L,10),(R,10),(U,10),(D,10)] $ Tall nmaster delta ratio

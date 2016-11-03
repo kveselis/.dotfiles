@@ -46,15 +46,17 @@ VBoxClient --display
 VBoxClient --checkhostversion
 
 #xrandr -s 1920x1080
+xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto
 xset r rate 200 30
+
 
 # xsetroot -cursor_name left_ptr & #not used if added in xmonad.hs
 
 # hides mouse cursor while typing
 xbanish &
 
-# now done in xmonad.hs
-# feh --bg-scale ~/Pictures/bg1.jpg
+# can be done in xmonad.hs
+feh --bg-scale ~/Pictures/bg1.jpg
 
 # not working on VM
 compton -b
@@ -62,6 +64,8 @@ compton -b
 #trayer --edge bottom --align right --SetDockType true --expand true --transparent true --alpha 0 --tint 0x000000 --height 12 --width 10  &
 
 start-pulseaudio-x11 &
+
+kbdd
 
 exec xmonad
 

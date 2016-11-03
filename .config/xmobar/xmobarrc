@@ -12,7 +12,7 @@ Config { font = "xft:DejaVu Sans:style=Book:pixelsize=18:antialias=true"
                , Run Network "wlp3s0" ["-L","0","-H","32","-n","green","-h","#ff4444", "-t", "<fc=#6c71c4><icon=net-wired.xbm/></fc> <rx>K<icon=arrow_down.xbm/> <tx>K<icon=arrow_up.xbm/>"] 10 
                , Run Cpu ["-L","3","-H","50","-n","#657b83","-h","#657b83", "-t", "<fc=#6c71c4><icon=cpu.xbm/></fc> <total>%"] 10
                , Run Memory ["-t","<fc=#268bd2><icon=mem.xbm/></fc> <usedratio>%"] 10
-               , Run Date "<fc=#93a1a1>%_d.%m.%Y %H:%M</fc>" "date" 10
+               , Run Date "<fc=#93a1a1>%_d.%m.%y %H:%M</fc>" "date" 10
 	             , Run Battery [
                     "-t", "<acstatus> <left>%",
                     "-L", "15",
@@ -25,7 +25,9 @@ Config { font = "xft:DejaVu Sans:style=Book:pixelsize=18:antialias=true"
                     "-O", "<fc=#859900><icon=power-ac.xbm/></fc>",
                     "-i", "<fc=#b58900><icon=power-ac.xbm/></fc>"
                     ] 100
-               , Run PipeReader "/var/run/user/1000/volume-display" "volume"
+               , Run Com "/home/artis/.config/xmobar/scripts/vol" [] "volume" 1
+               , Run Kbd [("lt", "Lt"), ("no", "No"), ("us", "En")]
+               --, Run PipeReader "/var/run/user/1000/volume-display" "volume"
                -- volume monitor
                --, Run Volume "default" "Master" ["--template"	,"Vol: <volume>%"
                --] 10
@@ -33,5 +35,5 @@ Config { font = "xft:DejaVu Sans:style=Book:pixelsize=18:antialias=true"
                  ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = " %UnsafeStdinReader% }{ %battery% %cpu% %memory% %wlp3s0%  %volume%   %date% "
+  , template = " %UnsafeStdinReader% }{ %battery% %cpu% %memory% %wlp3s0% %volume%  <fc=#859900>%kbd%</fc> %date% "
 }
