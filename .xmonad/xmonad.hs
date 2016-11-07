@@ -133,7 +133,7 @@ main = do
       , ("M-<R>",   shiftNextScreen)
       , ("M-<L>",   shiftPrevScreen)
       , ("M-z",     toggleWS)
-      ]
+      ] 
 
 
 myStartupHook = do
@@ -142,10 +142,12 @@ myStartupHook = do
   setDefaultCursor xC_left_ptr
 
 myManageHook = composeAll
-   [ className =? "chromium" --> doShift "2"
+   [ isDialog --> doFloat
+   , className =? "Qalculate-gtk" --> doFloat
+   , className =? "chromium" --> doShift "2"
    , className =? "urxvt" --> doShift "3"
-   , resource  =? "weechat" --> doShift "4"
-   , resource  =? "XXkb" --> doIgnore
+   , appName  =? "weechat" --> doShift "4"
+   , appName  =? "XXkb" --> doIgnore
    ]
 
 myLayoutHook = avoidStruts
