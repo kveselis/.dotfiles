@@ -94,7 +94,7 @@ main = do
            }
       }
       `additionalKeysP`
-      [ ("M-p",             spawn "dmenu_run -fn 'Inconsolata 16'")
+      [ ("M-p",             spawn "dmenu_recent -fn 'Inconsolata 16'")
       , ("M-S-p",           spawn "passmenu -fn 'Inconsolata 16'")
       , ("M-b",             sendMessage ToggleStruts)
       , ("M-c",             spawn "urxvtc -name weechat -e weechat")
