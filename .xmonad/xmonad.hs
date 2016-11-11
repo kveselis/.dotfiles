@@ -144,6 +144,7 @@ myStartupHook = do
 myManageHook = composeAll
    [ isDialog --> doFloat
    , className =? "Qalculate-gtk" --> doFloat
+   , className =? "Vlc" --> doFloat
    , className =? "chromium" --> doShift "2"
    , className =? "urxvt" --> doShift "3"
    , appName  =? "weechat" --> doShift "4"
