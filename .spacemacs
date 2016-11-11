@@ -29,7 +29,10 @@ values."
      restclient
      git
      markdown
-     (org :variables org-enable-github-support t)
+     (org :variables
+          org-enable-github-support t
+          org-projectile-file "TODOs.org"
+          )
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -122,7 +125,15 @@ values."
                          solarized-dark
                          leuven
                          monokai
-                         zenburn)
+                         zenburn
+                         moe-light
+                         moe-dark
+                         ample
+                         ample-zen
+                         gruvbox
+                         flatui
+                         flatland
+                         )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -325,6 +336,24 @@ layers configuration. You are free to put any user code."
                        (cons dotspacemacs-active-transparency
                              dotspacemacs-inactive-transparency))
 
+
+  ;; Org mode stuff
+  (with-eval-after-load 'org (setq org-agenda-files
+                                   '("~/org"))
+                             (setq org-enforce-todo-dependencies t)
+                             (setq org-log-done (quote time))
+                             (setq org-log-redeadline (quote time))
+                             (setq org-log-reschedule (quote time))
+                             (setq org-capture-templates
+                                   '(("t" "Todo" entry (file+headline "~/org/gtd.org" "Tasks")
+                                      "* TODO %^{Description}  %^g %? Added: %U")
+                                     ("n" "Notes" entry (file+datetree "~/org/gtd.org")
+                                      "* %^{Description} %^g %? Added: %U")
+                                     ("l" "Log Time" entry (file+datetree "~/org/timelog.org" )
+                                      "** %U - %^{Activity}  :TIME:")))
+                             (setq org-todo-keywords
+                                   '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED"))))
+
 )
 
 
@@ -335,13 +364,91 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
+ '(compilation-message-face (quote default))
+ '(cua-global-mark-cursor-color "#2aa198")
+ '(cua-normal-cursor-color "#839496")
+ '(cua-overwrite-cursor-color "#b58900")
+ '(cua-read-only-cursor-color "#859900")
+ '(evil-want-Y-yank-to-eol t)
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-symbol-colors
+   (--map
+    (solarized-color-blend it "#002b36" 0.25)
+    (quote
+     ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
+ '(highlight-symbol-foreground-color "#93a1a1")
+ '(highlight-tail-colors
+   (quote
+    (("#20240E" . 0)
+     ("#679A01" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#20240E" . 100))))
+ '(hl-bg-colors
+   (quote
+    ("#7B6000" "#8B2C02" "#990A1B" "#93115C" "#3F4D91" "#00629D" "#00736F" "#546E00")))
+ '(hl-fg-colors
+   (quote
+    ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
+ '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
+ '(magit-diff-use-overlays nil)
+ '(nrepl-message-colors
+   (quote
+    ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (ox-gfm pandoc-mode ox-pandoc ht org-projectile pcache org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot highlight async auto-complete helm-hoogle eyebrowse ob-elixir org hide-comnt org-plus-contrib clojure-snippets yasnippet intero column-enforce-mode git-link flycheck dash ws-butler web-mode spacemacs-theme spaceline persp-mode open-junk-file neotree macrostep leuven-theme indent-guide hindent help-fns+ helm-themes helm-projectile helm-descbinds helm-ag haskell-snippets google-translate evil-surround evil-search-highlight-persist evil-mc evil-matchit evil-iedit-state iedit emmet-mode elm-mode f clj-refactor cider-eval-sexp-fu cider auto-yasnippet alchemist elixir-mode ace-window ace-link ace-jump-helm-line smartparens undo-tree haskell-mode projectile helm helm-core markdown-mode magit git-commit with-editor hydra s package-build which-key window-numbering volatile-highlights vi-tilde-fringe use-package tagedit smooth-scrolling smeargle slim-mode shm scss-mode sass-mode ruby-end restclient restart-emacs rainbow-delimiters queue quelpa powershell powerline popwin pkg-info pcre2el paredit paradox page-break-lines orgit multiple-cursors move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum linum-relative less-css-mode jade-mode info+ inflections ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-swoop helm-mode-manager helm-make helm-gitignore helm-flx helm-css-scss helm-company helm-c-yasnippet golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger gh-md flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-numbers evil-nerd-commenter evil-magit evil-lisp-state evil-indent-plus evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu erlang elisp-slime-nav edn define-word company-web company-statistics company-quickhelp company-ghc company-cabal company-auctex cmm-mode clojure-mode clean-aindent-mode buffer-move bracketed-paste avy auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ac-ispell))))
+    (flatland-theme flatui-theme gruvbox-theme ample-zen-theme ample-theme moe-theme zenburn-theme monokai-theme solarized-theme dumb-jump ox-gfm pandoc-mode ox-pandoc ht org-projectile pcache org-present org-pomodoro alert log4e gntp org-download htmlize gnuplot highlight async auto-complete helm-hoogle eyebrowse ob-elixir org hide-comnt org-plus-contrib clojure-snippets yasnippet intero column-enforce-mode git-link flycheck dash ws-butler web-mode spacemacs-theme spaceline persp-mode open-junk-file neotree macrostep leuven-theme indent-guide hindent help-fns+ helm-themes helm-projectile helm-descbinds helm-ag haskell-snippets google-translate evil-surround evil-search-highlight-persist evil-mc evil-matchit evil-iedit-state iedit emmet-mode elm-mode f clj-refactor cider-eval-sexp-fu cider auto-yasnippet alchemist elixir-mode ace-window ace-link ace-jump-helm-line smartparens undo-tree haskell-mode projectile helm helm-core markdown-mode magit git-commit with-editor hydra s package-build which-key window-numbering volatile-highlights vi-tilde-fringe use-package tagedit smooth-scrolling smeargle slim-mode shm scss-mode sass-mode ruby-end restclient restart-emacs rainbow-delimiters queue quelpa powershell powerline popwin pkg-info pcre2el paredit paradox page-break-lines orgit multiple-cursors move-text mmm-mode markdown-toc magit-gitflow lorem-ipsum linum-relative less-css-mode jade-mode info+ inflections ido-vertical-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-swoop helm-mode-manager helm-make helm-gitignore helm-flx helm-css-scss helm-company helm-c-yasnippet golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger gh-md flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-numbers evil-nerd-commenter evil-magit evil-lisp-state evil-indent-plus evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu erlang elisp-slime-nav edn define-word company-web company-statistics company-quickhelp company-ghc company-cabal company-auctex cmm-mode clojure-mode clean-aindent-mode buffer-move bracketed-paste avy auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ac-ispell)))
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+ '(pos-tip-background-color "#A6E22E")
+ '(pos-tip-foreground-color "#272822")
+ '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
+ '(sml/active-background-color "#34495e")
+ '(sml/active-foreground-color "#ecf0f1")
+ '(sml/inactive-background-color "#dfe4ea")
+ '(sml/inactive-foreground-color "#34495e")
+ '(term-default-bg-color "#002b36")
+ '(term-default-fg-color "#839496")
+ '(vc-annotate-background nil)
+ '(vc-annotate-background-mode nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#F92672")
+     (40 . "#CF4F1F")
+     (60 . "#C26C0F")
+     (80 . "#E6DB74")
+     (100 . "#AB8C00")
+     (120 . "#A18F00")
+     (140 . "#989200")
+     (160 . "#8E9500")
+     (180 . "#A6E22E")
+     (200 . "#729A1E")
+     (220 . "#609C3C")
+     (240 . "#4E9D5B")
+     (260 . "#3C9F79")
+     (280 . "#A1EFE4")
+     (300 . "#299BA6")
+     (320 . "#2896B5")
+     (340 . "#2790C3")
+     (360 . "#66D9EF"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (unspecified "#272822" "#20240E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))
+ '(xterm-color-names
+   ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
+ '(xterm-color-names-bright
+   ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"]))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:family "DejaVu Sans Mono for Powerline" :foundry "PfEd" :slant normal :weight normal :height 120 :width normal))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
