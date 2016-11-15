@@ -138,7 +138,7 @@ main = do
 
 myStartupHook = do
   spawnOnce "xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto"
-  spawn "feh --bg-fill ~/Pictures/bg1.jpg"
+  spawn "feh --bg-fill ~/Pictures/wallpapers/default.jpg"
   setDefaultCursor xC_left_ptr
 
 myManageHook = composeAll

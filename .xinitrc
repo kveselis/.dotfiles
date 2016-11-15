@@ -56,7 +56,7 @@ xset r rate 200 30
 xbanish &
 
 # can be done in xmonad.hs
-feh --bg-scale ~/Pictures/bg1.jpg
+feh --bg-fill ~/Pictures/wallpapers/default.jpg
 
 # not working on VM
 compton -b
