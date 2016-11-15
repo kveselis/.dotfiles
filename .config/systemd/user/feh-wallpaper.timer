@@ -1,0 +1,10 @@
+[Unit]
+Description=Random wallpaper with feh
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=30min
+Unit=feh-wallpaper.service
+
+[Install]
+WantedBy=default.target
