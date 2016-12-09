@@ -9,7 +9,8 @@ alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
 export HISTSIZE=
-export EDITOR=vim
+export ALTERNATE_EDITOR=""
+export EDITOR=nvim
 
 export GOPATH=~/go
 export PATH="$PATH:$GOPATH/bin"
