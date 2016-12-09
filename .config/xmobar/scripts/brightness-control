@@ -19,7 +19,7 @@ xbacklight -time 0 -$do $STEP
 current=$(cat /sys/class/backlight/$BACKLIGHT_INTERFACE/brightness)
 max=$(cat /sys/class/backlight/$BACKLIGHT_INTERFACE/max_brightness)
 percent=$(echo "$current * 100 / $max" | bc -l | cut -d '.' -f 1)
-level="$(vbar $percent)"
+level="$(~/.config/xmobar/scripts/vbar $percent)"
 
 notify-send -r 98 -h int:value:$percent "Screen Brightness"
 echo "$ICON" "$level" > "$PIPE"

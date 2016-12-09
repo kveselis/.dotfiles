@@ -18,7 +18,7 @@ import XMonad.Layout.Named
 
 import XMonad.Hooks.DynamicLog             -- for xmobar
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.ManageHelpers (isFullscreen, isDialog,  doFullFloat, doCenterFloat)
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.EwmhDesktops           -- for quit-monad.sh and notify-send, wmctrl
@@ -45,8 +45,9 @@ myIconDir            = "/home/artis/.xmonad/icons/"
 
 myTitleLength = 90
 
-myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
-
+myWorkspaces = map show [1..9]
+myActiveWsp = ["➊","➋","➌","➍","➎","➏","➐","➑","➒"]
+myInactiveWsp = ["➀","➁","➂","➃","➄","➅","➆","➇","➈"]
 
 -- LibNotify urgency hook
 -- Create notification popup when some window becomes urgent.
@@ -55,7 +56,7 @@ instance UrgencyHook LibNotifyUrgencyHook where
     urgencyHook LibNotifyUrgencyHook w = do
         name     <- getName w
         Just idx <- fmap (W.findTag w) $ gets windowset
-        safeSpawn "notify-send" [show name, "Urgent window"]
+        safeSpawn "notify-send" [show name, "workspace: " ++ idx]
 
 
 
@@ -75,12 +76,12 @@ main = do
       , logHook            = dynamicLogWithPP xmobarPP
            { ppOutput          = hPutStrLn xmproc
            , ppTitle           = xmobarColor solarizedYellow "" . shorten myTitleLength
-           , ppCurrent         = xmobarColor solarizedBlue solarizedBase03 . \s -> "●"
-           , ppVisible         = xmobarColor solarizedBase1 solarizedBase03 . \s -> "●"
-           , ppHidden          = xmobarColor solarizedBase01 solarizedBase03 . \s -> "●"
-           , ppHiddenNoWindows = xmobarColor solarizedBase02 solarizedBase03  . \s -> "○"
-           , ppSep             = xmobarColor solarizedBase01 "" "    "
-	   , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> "●"
+           , ppCurrent         = xmobarColor solarizedBlue solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
+           , ppVisible         = xmobarColor solarizedBase1 solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
+           , ppHidden          = xmobarColor solarizedBase01 solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
+           , ppHiddenNoWindows = xmobarColor solarizedBase02 solarizedBase03  . \s -> myInactiveWsp!!((read s::Int)-1)
+           , ppSep             = xmobarColor solarizedBase01 "" " "
+	   , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
            , ppLayout          =
 	              (\x -> case x of
                          "Full"  -> "<icon=" ++ myIconDir ++ "layout-full.xbm/>"
@@ -94,8 +95,9 @@ main = do
            }
       }
       `additionalKeysP`
-      [ ("M-p",             spawn "dmenu_recent -fn 'Inconsolata 16'")
-      , ("M-S-p",           spawn "passmenu -fn 'Inconsolata 16'")
+      [ ("M-p",             spawn "dmenu_recent -fn PragmataPro-13")
+      , ("M-S-p",           spawn "passmenu -fn PragmataPro-13")
+      , ("M-r",             spawn "rofi -font 'Pragmata Pro 12' -combi-modi window,drun,run -show combi")
       , ("M-b",             sendMessage ToggleStruts)
       , ("M-c",             spawn "urxvtc -name weechat -e weechat")
       , ("M-o",             spawn "urxvtc -name ncmpcpp -e ncmpcpp")
@@ -108,12 +110,12 @@ main = do
       , ("M-S-f",           spawn "firefox")
       , ("M-S-A-q",         io (exitWith ExitSuccess))
       , ("M-q",             spawn $ unlines [
-             "xmonad --recompile"
+	    "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"
-           , "    notify-send -r 99 -u low XMonad 'Recompiled and restarted.'"
+           , "    NID=$(notify-send -u low 'XMonad' 'Recompiled and restarted.')"
            , "else"
-           , "    notify-send -r 99 -u critical \"XMonad recompilation failed\" \"\n$(cat ~/.xmonad/xmonad.errors)\""
+           , "    notify-send -u critical \"XMonad recompilation failed!\" \"$(cat ~/.xmonad/xmonad.errors)\""
            , "fi"
            ]
         )
@@ -121,28 +123,35 @@ main = do
       , ("<XF86Display>",           spawn "arandr")
       , ("<XF86MonBrightnessUp>"  , spawn "xbacklight + 5 -time 100 -steps 1")
       , ("<XF86MonBrightnessDown>", spawn "xbacklight - 5 -time 100 -steps 1")
-      , ("<XF86AudioLowerVolume>",  spawn "amixer -q -D pulse set Master 2%- unmute")
-      , ("<XF86AudioRaiseVolume>",  spawn "amixer -q -D pulse set Master 2%+ unmute")
-      , ("<XF86AudioMute>",         spawn "amixer -q -D pulse set Master toggle")
+      , ("<XF86AudioLowerVolume>",  spawn "~/.config/xmobar/scripts/vol-control down")
+      , ("<XF86AudioRaiseVolume>",  spawn "~/.config/xmobar/scripts/vol-control up")
+      , ("<XF86AudioMute>",         spawn "~/.config/xmobar/scripts/vol-control toggle")
 
-       -- CycleWS setup, keybindings for 
+       -- CycleWS setup, keybindings for
       , ("M-C-<R>", nextWS)
       , ("M-C-<L>", prevWS)
       , ("M-S-<R>", shiftToNext >> nextWS)
       , ("M-S-<L>", shiftToPrev >> prevWS)
-      , ("M-<R>",   shiftNextScreen)
-      , ("M-<L>",   shiftPrevScreen)
+      , ("M-S-.",   shiftNextScreen)
+      , ("M-S-,",   shiftPrevScreen)
+      , ("M-<R>",   nextScreen)
+      , ("M-<L>",   prevScreen)
+      , ("M-x",     swapNextScreen)
       , ("M-z",     toggleWS)
-      ] 
+      ]
 
 
 myStartupHook = do
   spawnOnce "xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto"
   spawn "feh --bg-fill ~/Pictures/wallpapers/default.jpg"
+  spawn "pgrep redshift || redshift"
+--  spawnOnce "pgrep dunst || dunst" -- probably not needed
   setDefaultCursor xC_left_ptr
+  spawn "~/.config/xmobar/scripts/vol-control status"
 
 myManageHook = composeAll
    [ isDialog --> doFloat
+   , className =? "VirtualBox" --> doFloat
    , className =? "Qalculate-gtk" --> doFloat
    , className =? "Vlc" --> doFloat
    , className =? "chromium" --> doShift "2"
@@ -152,7 +161,6 @@ myManageHook = composeAll
    ]
 
 myLayoutHook = avoidStruts
-   $ onWorkspace "1" (Full ||| tiled ||| Mirror tiled)
    $ onWorkspace "2" (Full ||| tiled ||| Mirror tiled)
    $ layouts
    where layouts = tiled ||| Mirror tiled ||| Full

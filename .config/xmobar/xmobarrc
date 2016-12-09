@@ -1,4 +1,4 @@
-Config { font = "xft:DejaVu Sans:style=Book:pixelsize=18:antialias=true"
+Config { font = "xft:Pragmata Pro:style=Regular:pixelsize=18:antialias=true"
   , bgColor = "#002b36"
   , fgColor = "#657b83"
   , border = NoBorder
@@ -9,32 +9,34 @@ Config { font = "xft:DejaVu Sans:style=Book:pixelsize=18:antialias=true"
   , lowerOnStart = False
   , iconRoot = "/home/artis/.xmonad/icons"
   , commands = [ Run UnsafeXMonadLog
-               , Run Network "wlp3s0" ["-L","0","-H","32","-n","green","-h","#ff4444", "-t", "<fc=#6c71c4><icon=net-wired.xbm/></fc> <rx>K<icon=arrow_down.xbm/> <tx>K<icon=arrow_up.xbm/>"] 10 
+               , Run Network "wlp3s0" [
+                     "-L", "500000",
+                     "-H", "1500000",
+                     --"-l", "#859900",
+                     "-n", "#b58900",
+                     "-h", "#dc322f",
+                     "-t", "<fc=#268bd2,#002b36><icon=net-wired.xbm/> </fc><rx>K<icon=arrow_down.xbm/> <tx>K<icon=arrow_up.xbm/>"] 10
                -- , Run Cpu ["-L","3","-H","50","-n","#657b83","-h","#657b83", "-t", "<fc=#6c71c4><icon=cpu.xbm/></fc> <total>%"] 10
                -- , Run Memory ["-t","<fc=#268bd2><icon=mem.xbm/></fc> <usedratio>%"] 10
-               , Run Date "<fc=#93a1a1>%_d.%m.%y %H:%M</fc>" "date" 60
+               , Run Date "<fc=#000000,#2aa198>%_d.%m.%y %H:%M </fc>" "date" 60
 	       , Run Battery [
-                    "-t", "<acstatus> <left>%",
+                    "-t", "<acstatus><left>",
                     "-L", "15",
-                    "-H", "30",
+                    "-H", "60",
                     "-l", "#dc322f",
                     "-n", "#b58900",
-                    "-h", "#586e75",
+                    --"-h", "#657b83",
                     "--",
-                    "-o", "<fc=#2aa198><icon=power-bat.xbm/></fc>",
-                    "-O", "<fc=#859900><icon=power-ac.xbm/></fc>",
-                    "-i", "<fc=#b58900><icon=power-ac.xbm/></fc>"
-                    ] 60
-               , Run Com "/home/artis/.config/xmobar/scripts/vol" [] "volume" 20
+                    "-o", "<fc=#859900,#002b36><icon=power-bat.xbm/></fc> ",
+                    "-O", "<fc=#859900,#002b36><icon=power-ac.xbm/></fc> ",
+                    "-i", "<fc=#859900,#002b36><icon=power-ac.xbm/></fc> "
+                    ] 300
+               , Run PipeReader "/run/user/1000/volume-display" "volume"
                , Run Kbd [("lt", "Lt"), ("no", "No"), ("us", "En")]
-               --, Run PipeReader "/var/run/user/1000/volume-display" "volume"
-               -- volume monitor
-               --, Run Volume "default" "Master" ["--template"	,"Vol: <volume>%"
-               --] 10
                , Run UnsafeStdinReader
                  ]
   , sepChar = "%"
   , alignSep = "}{"
---  , template = " %UnsafeStdinReader% }{ %battery% %cpu% %memory% %wlp3s0% %volume%  <fc=#859900>%kbd%</fc> %date% "
-  , template = " %UnsafeStdinReader% }{ %battery% %wlp3s0% %volume%  <fc=#859900>%kbd%</fc> %date% "
+--  , template = " %UnsafeStdinReader% }{ %battery% %cpu% %memory% %wlp3s0% %volume% <fc=#859900>%kbd%</fc> %date% "
+  , template = " %UnsafeStdinReader% }{ %battery% %wlp3s0% %volume% <fc=#000000,#b58900> %kbd% </fc>%date%"
 }
