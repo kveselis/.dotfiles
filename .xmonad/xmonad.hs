@@ -1,5 +1,8 @@
+module Main (main) where
+
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
+import qualified XMonad.Util.ExtensibleState as State
 
 import Graphics.X11.ExtraTypes.XF86
 import Control.Monad
@@ -59,7 +62,6 @@ instance UrgencyHook LibNotifyUrgencyHook where
         safeSpawn "notify-send" [show name, "workspace: " ++ idx]
 
 
-
 main = do
    xmproc <- spawnPipe "xmobar"
    xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh defaultConfig
@@ -78,7 +80,7 @@ main = do
            , ppTitle           = xmobarColor solarizedYellow "" . shorten myTitleLength
            , ppCurrent         = xmobarColor solarizedBlue solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
            , ppVisible         = xmobarColor solarizedBase1 solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
-           , ppHidden          = xmobarColor solarizedBase01 solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
+           , ppHidden          = xmobarColor solarizedBase1 solarizedBase03 . \s -> myInactiveWsp!!((read s::Int)-1)
            , ppHiddenNoWindows = xmobarColor solarizedBase02 solarizedBase03  . \s -> myInactiveWsp!!((read s::Int)-1)
            , ppSep             = xmobarColor solarizedBase01 "" " "
 	   , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
@@ -98,16 +100,17 @@ main = do
       [ ("M-p",             spawn "dmenu_recent -fn PragmataPro-13")
       , ("M-S-p",           spawn "passmenu -fn PragmataPro-13")
       , ("M-r",             spawn "rofi -font 'Pragmata Pro 12' -combi-modi window,drun,run -show combi")
+      , ("M-S-r",           spawn "autopass")
       , ("M-b",             sendMessage ToggleStruts)
-      , ("M-c",             spawn "urxvtc -name weechat -e weechat")
+      , ("M-c",             spawn "urxvtc -name weechat -e weechat") -- -name changes the resource name (so it's not urxvtc)
       , ("M-o",             spawn "urxvtc -name ncmpcpp -e ncmpcpp")
+      , ("M-e",             spawn "emacs")
+      , ("M-g",             spawn "google-chrome-unstable")
+      , ("M-f",             spawn "firefox")
       , ("M-S-l",           spawn "slock") -- Lock the screen
       , ("M-S-q",           spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Quit xmonad nicely
       , ("M-S-<Backspace>", spawn "/bin/systemctl suspend")
       , ("M-S-<Delete>",    spawn "/bin/systemctl hibernate")
-      , ("M-S-e",           spawn "emacs")
-      , ("M-S-g",           spawn "chromium")
-      , ("M-S-f",           spawn "firefox")
       , ("M-S-A-q",         io (exitWith ExitSuccess))
       , ("M-q",             spawn $ unlines [
 	    "xmonad --recompile"
@@ -126,6 +129,8 @@ main = do
       , ("<XF86AudioLowerVolume>",  spawn "~/.config/xmobar/scripts/vol-control down")
       , ("<XF86AudioRaiseVolume>",  spawn "~/.config/xmobar/scripts/vol-control up")
       , ("<XF86AudioMute>",         spawn "~/.config/xmobar/scripts/vol-control toggle")
+      , ("M-<F5>", cycleRedShift)
+      , ("M-<F6>", cycleRedShift)
 
        -- CycleWS setup, keybindings for
       , ("M-C-<R>", nextWS)
@@ -148,17 +153,27 @@ myStartupHook = do
 --  spawnOnce "pgrep dunst || dunst" -- probably not needed
   setDefaultCursor xC_left_ptr
   spawn "~/.config/xmobar/scripts/vol-control status"
+  spawnOnce "~/bin/locker"
 
-myManageHook = composeAll
-   [ isDialog --> doFloat
-   , className =? "VirtualBox" --> doFloat
-   , className =? "Qalculate-gtk" --> doFloat
-   , className =? "Vlc" --> doFloat
-   , className =? "chromium" --> doShift "2"
-   , className =? "urxvt" --> doShift "3"
-   , appName  =? "weechat" --> doShift "4"
-   , appName  =? "XXkb" --> doIgnore
+
+
+-- To find the property name associated with a program, use
+-- > xprop | grep WM_CLASS
+myManageHook = composeAll . concat $
+   [ [isDialog --> doFloat]
+   , [className =? c --> doFloat | c <- myClassFloats]
+   , [resource  =? r --> doIgnore | r <- myIgnores]
+   , [className =? "Emacs" --> viewShift (myWorkspaces !! 2)]
+   , [className =? "urxvt" --> doShift (myWorkspaces !! 0)]
+   , [appName   =? "weechat" --> doShift (myWorkspaces !! 4)]
+   , [isDialog --> doCenterFloat]
+   , [isFullscreen --> (doF W.focusDown <+> doFullFloat)]
    ]
+   where
+     viewShift = doF . liftM2 (.) W.greedyView W.shift
+     myClassFloats  = ["Gimp", "VirtualBox", "Qalculate-gtk", "Vlc"]
+     myTitleFloats  = []
+     myIgnores = ["desktop_window"]
 
 myLayoutHook = avoidStruts
    $ onWorkspace "2" (Full ||| tiled ||| Mirror tiled)
@@ -186,3 +201,33 @@ solarizedViolet     = "#6c71c4"
 solarizedBlue       = "#268bd2"
 solarizedCyan       = "#2aa198"
 solarizedGreen      = "#859900"
+
+
+
+nxt :: (Eq a, Enum a, Bounded a) => a -> a
+nxt x | x == maxBound = minBound
+      | otherwise = succ x
+
+data RedShift = RedShiftEnabled | RedShiftEnabledMax | RedShiftEnabledMin | RedShiftDisabled
+  deriving (Eq, Ord, Enum, Bounded, Read, Show, Typeable)
+
+instance ExtensionClass RedShift where
+  initialValue = RedShiftEnabled
+  extensionType = PersistentExtension
+
+cycleRedShift :: X ()
+cycleRedShift = do
+  x <- State.get
+  let x' = nxt x
+  updateRedShift x'
+  State.put x'
+
+updateRedShift :: RedShift -> X ()
+updateRedShift RedShiftEnabled = do
+  spawn "killall redshift; notify-send -r 14 'RedShift' 'ON'; redshift -r"
+updateRedShift RedShiftEnabledMax = do
+  spawn "killall redshift; notify-send -r 14 'RedShift' 'ON Low'; redshift -r -t 5000:4000"
+updateRedShift RedShiftEnabledMin = do
+  spawn "killall redshift; notify-send -r 14 'RedShift' 'ON High'; redshift -r -t 4000:3000"
+updateRedShift RedShiftDisabled = do
+  spawn "pkill -USR1 redshift; notify-send -r 14 'RedShift' 'OFF';"
