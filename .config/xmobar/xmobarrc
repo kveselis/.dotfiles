@@ -9,37 +9,26 @@ Config { font = "xft:Pragmata Pro:style=Regular:pixelsize=18:antialias=true"
   , lowerOnStart = False
   , iconRoot = "/home/artis/.xmonad/icons"
   , commands = [ Run UnsafeXMonadLog
-               , Run Wireless "wlp3s0" ["-t", "<fc=#268bd2,#002b36><icon=net-wifi5.xbm/></fc> <essid>"] 60
---               , Run Network "wlp3s0" [
+               , Run Wireless "wlp3s0" ["-t", "<fc=#268bd2,#002b36><qualityipat></fc> <essid>", "--", "--quality-icon-pattern", "<icon=w/%%.xpm/>"] 100
                , Run DynNetwork [
                      "-L", "500000",
                      "-H", "1500000",
-                     --"-l", "#859900",
                      "-n", "#b58900",
                      "-h", "#dc322f",
-                     "-t", "<rx>K<icon=arrow_down.xbm/> <tx>K<icon=arrow_up.xbm/>"] 10
-               -- , Run Cpu ["-L","3","-H","50","-n","#657b83","-h","#657b83", "-t", "<fc=#6c71c4><icon=cpu.xbm/></fc> <total>%"] 10
-               -- , Run Memory ["-t","<fc=#268bd2><icon=mem.xbm/></fc> <usedratio>%"] 10
-               , Run Date "%_d.%m.%y %H:%M" "date" 60
+                     "-t", "<rx>K<icon=arrow_down.xbm/> <tx>K<icon=arrow_up.xbm/>"] 20
+               , Run Date "%_d.%m.%y %H:%M" "date" 300
 	             , Run Battery [
-                    "-t", "<acstatus> <left>",
-                    "-L", "15",
-                    "-H", "60",
-                    "-l", "#dc322f",
-                    "-n", "#b58900",
-                    --"-h", "#657b83",
-                    "--",
-                    "-o", "<fc=#859900,#002b36><icon=power-bat.xbm/></fc>",
-                    "-O", "<fc=#859900,#002b36><icon=power-ac.xbm/></fc>",
-                    "-i", "<fc=#859900,#002b36><icon=power-ac.xbm/></fc>"
-                    ] 300
---               , Run MPD ["-t", "<title>" ] 10
+                     "-t", "<acstatus> <left>",
+                     "--",
+                     "-o", "<leftipat>",
+                     "-O", "<icon=b/on.xpm/>",
+                     "-i", "<icon=b/on-full.xpm/>",
+                     "--off-icon-pattern", "<icon=b/%%.xpm/>"] 10
                , Run PipeReader "/run/user/1000/volume-display" "volume"
                , Run Kbd [("lt", "Lt"), ("no", "No"), ("us", "En")]
                , Run UnsafeStdinReader
-                 ]
+               ]
   , sepChar = "%"
   , alignSep = "}{"
---  , template = " %UnsafeStdinReader% }{ %battery% %cpu% %memory% %wlp3s0% %volume% <fc=#859900>%kbd%</fc> %date% "
-  , template = " %UnsafeStdinReader% }{ %battery% | %wlp3s0wi% %dynnetwork% | %volume% <fc=#000000,#b58900> %kbd% </fc><fc=#000000,#2aa198> %date% </fc>"
+  , template = " %UnsafeStdinReader% }{%battery% | <action=`urxvtc -name wifi-menu -e sudo wifi-menu`>%wlp3s0wi% %dynnetwork%</action> | %volume% <fc=#000000,#b58900> %kbd% </fc><fc=#000000,#2aa198> %date% </fc>"
 }

@@ -45,6 +45,9 @@ VboxClient --seamless
 VBoxClient --display 
 VBoxClient --checkhostversion
 
+# manages removeable media 
+udiskie &
+
 #xrandr -s 1920x1080
 xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto
 xset r rate 200 30

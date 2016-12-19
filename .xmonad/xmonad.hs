@@ -4,9 +4,11 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import qualified XMonad.Util.ExtensibleState as State
 
+import Data.List
+import System.IO                           -- for xmobar
+import System.Exit
 import Graphics.X11.ExtraTypes.XF86
 import Control.Monad
-import XMonad.Util.NamedWindows
 
 import XMonad
 import XMonad.Layout.Spacing
@@ -28,19 +30,24 @@ import XMonad.Hooks.EwmhDesktops           -- for quit-monad.sh and notify-send,
 
 import XMonad.Actions.SpawnOn
 import XMonad.Actions.CycleWS
-import XMonad.Util.SpawnOnce
+import XMonad.Actions.Promote
 
+import XMonad.Util.SpawnOnce
+import XMonad.Util.NamedWindows
 import XMonad.Util.Run
 import XMonad.Util.EZConfig                -- removeKeys, additionalKeys
 import XMonad.Util.Cursor
+import XMonad.Util.NamedScratchpad (NamedScratchpad (..),
+                                    customFloating,
+                                    namedScratchpadFilterOutWorkspacePP, -- Do not display NSP workspace
+                                    namedScratchpadAction,
+                                    namedScratchpadManageHook)
 
-import Data.List
-import System.IO                           -- for xmobar
-import System.Exit
 
 
 myModMask            = mod4Mask
 myTerminal           = "urxvt"
+myTerminalc          = "urxvtc"
 myNormalBorderColor  = solarizedBase01
 myFocusedBorderColor = solarizedBase1
 myBorderWidth        = 0
@@ -49,10 +56,31 @@ myIconDir            = "/home/artis/.xmonad/icons/"
 myTitleLength = 90
 
 myWorkspaces = map show [1..9]
-myActiveWsp = ["➊","➋","➌","➍","➎","➏","➐","➑","➒"]
-myInactiveWsp = ["➀","➁","➂","➃","➄","➅","➆","➇","➈"]
 
--- LibNotify urgency hook
+myActiveWsp = clickable $ ["➊","➋","➌","➍","➎","➏","➐","➑","➒"]
+myInactiveWsp = clickable $ ["➀","➁","➂","➃","➄","➅","➆","➇","➈"]
+clickable lst =
+  ["<action=xdotool key super+" ++ show i ++ ">" ++ w ++ "</action>" |
+   (i, w) <- zip [1..(length lst)] lst]
+
+
+-- namedscratchpad
+myScratchpads =
+  [
+      NS "scratchTerm"    spawnTerm findTerm (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+    , NS "scratchHtop"    spawnHtop findHtop (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+    , NS "scratchNcmpcpp" spawnNcmpcpp findNcmpcpp (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+    , NS "scratchMixer"   spawnMixer findMixer (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+  ] where
+      spawnTerm    = myTerminal ++ " -background rgba:0000/0000/0200/f000 -name scratchTerm"
+      findTerm     = resource =? "scratchTerm"
+      spawnHtop    = myTerminalc ++  " -background rgba:0000/0000/0200/f000 -name scratchHtop -e htop"
+      findHtop     = resource =? "scratchHtop"
+      spawnNcmpcpp = myTerminalc ++ " -name scratchNcmpcpp -e ncmpcpp"
+      findNcmpcpp  = resource =? "scratchNcmpcpp"
+      spawnMixer   = myTerminalc ++ " -name scratchMixer -e alsamixer"
+      findMixer    = resource =? "scratchMixer"
+
 -- Create notification popup when some window becomes urgent.
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
 instance UrgencyHook LibNotifyUrgencyHook where
@@ -60,7 +88,6 @@ instance UrgencyHook LibNotifyUrgencyHook where
         name     <- getName w
         Just idx <- fmap (W.findTag w) $ gets windowset
         safeSpawn "notify-send" [show name, "workspace: " ++ idx]
-
 
 main = do
    xmproc <- spawnPipe "xmobar"
@@ -72,10 +99,11 @@ main = do
       , focusedBorderColor = myFocusedBorderColor
       , workspaces         = myWorkspaces
       , startupHook        = myStartupHook
-      , manageHook         = manageSpawn <+> manageDocks <+> myManageHook <+> manageHook defaultConfig
+      , manageHook         = manageSpawn <+> manageDocks <+> myManageHook
+                             <+> namedScratchpadManageHook myScratchpads <+> manageHook defaultConfig
       , layoutHook         = smartBorders $ myLayoutHook
       , handleEventHook    = mconcat [docksEventHook, handleEventHook defaultConfig]
-      , logHook            = dynamicLogWithPP xmobarPP
+      , logHook            = dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
            { ppOutput          = hPutStrLn xmproc
            , ppTitle           = xmobarColor solarizedYellow "" . shorten myTitleLength
            , ppCurrent         = xmobarColor solarizedBlue solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
@@ -101,9 +129,15 @@ main = do
       , ("M-S-p",           spawn "passmenu -fn PragmataPro-13")
       , ("M-r",             spawn "rofi -font 'Pragmata Pro 12' -combi-modi window,drun,run -show combi")
       , ("M-S-r",           spawn "autopass")
+      , ("M-n",             refresh)
+      , ("M-m",             windows W.focusMaster)
+      , ("M-S-m",           promote)
       , ("M-b",             sendMessage ToggleStruts)
-      , ("M-c",             spawn "urxvtc -name weechat -e weechat") -- -name changes the resource name (so it's not urxvtc)
-      , ("M-o",             spawn "urxvtc -name ncmpcpp -e ncmpcpp")
+      , ("M-c",             spawn (myTerminalc ++ " -name weechat -e weechat")) -- -name changes the resource name (so it's not urxvtc)
+      , ("M-o",             namedScratchpadAction myScratchpads "scratchNcmpcpp")
+      , ("M-<Return>",      namedScratchpadAction myScratchpads "scratchTerm")
+      , ("M-i",             namedScratchpadAction myScratchpads "scratchHtop")
+      , ("M-<F1>",          namedScratchpadAction myScratchpads "scratchMixer")
       , ("M-e",             spawn "emacs")
       , ("M-g",             spawn "google-chrome-unstable")
       , ("M-f",             spawn "firefox")
@@ -148,14 +182,11 @@ main = do
 
 myStartupHook = do
   spawnOnce "xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto"
-  spawn "feh --bg-fill ~/Pictures/wallpapers/default.jpg"
   spawn "pgrep redshift || redshift"
---  spawnOnce "pgrep dunst || dunst" -- probably not needed
   setDefaultCursor xC_left_ptr
   spawn "~/.config/xmobar/scripts/vol-control status"
   spawnOnce "~/bin/locker"
-
-
+  spawn "feh --bg-fill ~/Pictures/wallpapers/default.jpg"
 
 -- To find the property name associated with a program, use
 -- > xprop | grep WM_CLASS
@@ -166,6 +197,7 @@ myManageHook = composeAll . concat $
    , [className =? "Emacs" --> viewShift (myWorkspaces !! 2)]
    , [className =? "urxvt" --> doShift (myWorkspaces !! 0)]
    , [appName   =? "weechat" --> doShift (myWorkspaces !! 4)]
+   , [appName   =? "wifi-menu" --> doCenterFloat]
    , [isDialog --> doCenterFloat]
    , [isFullscreen --> (doF W.focusDown <+> doFullFloat)]
    ]
