@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo true
+
+COUNTRY=$(mycountry)
+
+sudo reflector --country $COUNTRY -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist || true
+yaourt -Syyu --noconfirm
