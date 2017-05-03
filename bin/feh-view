@@ -1,7 +1,7 @@
 #!/bin/bash
 
 shopt -s nullglob
-feh_args=(--magick-timeout 10 --image-bg black -g 800x600)
+feh_args=(--magick-timeout 10 --image-bg black -g 800x600 --info ";")
 
 if ! [[ -f $1 || -d $1 || -z $1 ]]; then
   printf '%s\n' "$0: first argument is not a file or directory" >&2

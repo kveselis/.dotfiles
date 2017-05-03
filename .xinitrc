@@ -34,24 +34,24 @@ fi
 
 # Start urxvtd, if installed.
 if which urxvtd >/dev/null 2>&1; then
-	mkdir -p "$HOME/.urxvt" && rm -f "$HOME/.urxvt/"urxvtd-*
-	export RXVT_SOCKET="$HOME/.urxvt/urxvtd-$(hostname)-$$"
-	urxvtd -f -o -q
+  mkdir -p "$HOME/.urxvt" && rm -f "$HOME/.urxvt/"urxvtd-*
+  export RXVT_SOCKET="$HOME/.urxvt/urxvtd-$(hostname)-$$"
+  urxvtd -f -o -q
 fi
 
-VBoxClient --clipboard 
-VBoxClient --draganddrop 
-VboxClient --seamless 
-VBoxClient --display 
-VBoxClient --checkhostversion
+#VBoxClient --clipboard
+#VBoxClient --draganddrop
+#VboxClient --seamless
+#VBoxClient --display
+#VBoxClient --checkhostversion
 
-# manages removeable media 
+# manages removeable media
 udiskie &
 
-#xrandr -s 1920x1080
-xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto
-xset r rate 200 30
+# moved to xmonad
+# xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto
 
+xset r rate 200 30
 
 # xsetroot -cursor_name left_ptr & #not used if added in xmonad.hs
 
@@ -59,7 +59,7 @@ xset r rate 200 30
 xbanish &
 
 # can be done in xmonad.hs
-feh --bg-fill ~/Pictures/wallpapers/default.jpg
+# feh --bg-fill ~/Pictures/wallpapers/default.jpg
 
 # not working on VM
 compton -b
@@ -68,7 +68,4 @@ compton -b
 
 start-pulseaudio-x11 &
 
-kbdd
-
 exec xmonad
-

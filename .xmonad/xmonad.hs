@@ -1,5 +1,7 @@
 module Main (main) where
 
+import XMonad
+
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import qualified XMonad.Util.ExtensibleState as State
@@ -10,7 +12,6 @@ import System.Exit
 import Graphics.X11.ExtraTypes.XF86
 import Control.Monad
 
-import XMonad
 import XMonad.Layout.Spacing
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Gaps
@@ -32,6 +33,7 @@ import XMonad.Actions.SpawnOn
 import XMonad.Actions.CycleWS
 import XMonad.Actions.Promote
 
+import XMonad.Util.Dmenu
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedWindows
 import XMonad.Util.Run
@@ -71,6 +73,7 @@ myScratchpads =
     , NS "scratchHtop"    spawnHtop findHtop (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
     , NS "scratchNcmpcpp" spawnNcmpcpp findNcmpcpp (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
     , NS "scratchMixer"   spawnMixer findMixer (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+    , NS "scratchQalc"    spawnQalc findQalc doFullFloat
   ] where
       spawnTerm    = myTerminal ++ " -background rgba:0000/0000/0200/f000 -name scratchTerm"
       findTerm     = resource =? "scratchTerm"
@@ -80,6 +83,9 @@ myScratchpads =
       findNcmpcpp  = resource =? "scratchNcmpcpp"
       spawnMixer   = myTerminalc ++ " -name scratchMixer -e alsamixer"
       findMixer    = resource =? "scratchMixer"
+      spawnQalc   = "qalculate-gtk"
+      findQalc    = resource =? "qalculate-gtk"
+
 
 -- Create notification popup when some window becomes urgent.
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
@@ -115,10 +121,10 @@ main = do
            , ppLayout          =
 	              (\x -> case x of
                          "Full"  -> "<icon=" ++ myIconDir ++ "layout-full.xbm/>"
-                         "Mirror SmartSpacing 10 Tall" -> "<icon=" ++ myIconDir ++ "layout-mirror-bottom.xbm/>"
-                         "Mirror ResizableTall" -> "<icon=" ++ myIconDir ++ "layout-mirror-top.xbm/>"
-                         "SmartSpacing 10 Tall" -> "<icon=" ++ myIconDir ++ "layout-tall-right.xbm/>"
-                         "ResizableTall"        -> "<icon=" ++ myIconDir ++ "layout-tall-left.xbm/>"
+                         "Mirror SmartSpacing 5 Tall" -> "<icon=" ++ myIconDir ++ "layout-mirror-bottom.xbm/>"
+--                         "Mirror ResizableTall" -> "<icon=" ++ myIconDir ++ "layout-mirror-top.xbm/>"
+                         "SmartSpacing 5 Tall" -> "<icon=" ++ myIconDir ++ "layout-tall-right.xbm/>"
+--                         "ResizableTall"        -> "<icon=" ++ myIconDir ++ "layout-tall-left.xbm/>"
                          "Simple Float"         -> "~"
                          _                      -> pad x
                       )
@@ -133,7 +139,8 @@ main = do
       , ("M-m",             windows W.focusMaster)
       , ("M-S-m",           promote)
       , ("M-b",             sendMessage ToggleStruts)
-      , ("M-c",             spawn (myTerminalc ++ " -name weechat -e weechat")) -- -name changes the resource name (so it's not urxvtc)
+      , ("M-c",             namedScratchpadAction myScratchpads "scratchQalc")
+      , ("M-w",             spawn (myTerminalc ++ " -name weechat -e weechat")) -- -name changes the resource name (so it's not urxvtc)
       , ("M-o",             namedScratchpadAction myScratchpads "scratchNcmpcpp")
       , ("M-<Return>",      namedScratchpadAction myScratchpads "scratchTerm")
       , ("M-i",             namedScratchpadAction myScratchpads "scratchHtop")
@@ -142,11 +149,11 @@ main = do
       , ("M-g",             spawn "google-chrome-unstable")
       , ("M-f",             spawn "firefox")
       , ("M-S-l",           spawn "slock") -- Lock the screen
-      , ("M-S-q",           spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Quit xmonad nicely
+--      , ("M-S-q",         confirm "Quit XMonad?" $ $io (exitWith ExitSuccess))
+      , ("M-S-q",           confirm "Quit XMonad?" $ spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Try to Quit xmonad nicely
       , ("M-S-<Backspace>", spawn "/bin/systemctl suspend")
       , ("M-S-<Delete>",    spawn "/bin/systemctl hibernate")
-      , ("M-S-A-q",         io (exitWith ExitSuccess))
-      , ("M-q",             spawn $ unlines [
+      , ("M-q",             confirm "Recompile and restart XMonad?" $ spawn $ unlines [
 	    "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"
@@ -177,33 +184,35 @@ main = do
       , ("M-<L>",   prevScreen)
       , ("M-x",     swapNextScreen)
       , ("M-z",     toggleWS)
+      , ("M-<Backspace>",     toggleWS)
       ]
 
 
 myStartupHook = do
-  spawnOnce "xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto"
-  spawn "pgrep redshift || redshift"
   setDefaultCursor xC_left_ptr
+  spawn "xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto"
+  spawn "killall redshift; redshift -r"
   spawn "~/.config/xmobar/scripts/vol-control status"
-  spawnOnce "~/bin/locker"
-  spawn "feh --bg-fill ~/Pictures/wallpapers/default.jpg"
+  spawn "~/bin/locker"
+  spawn "nextwall"
 
 -- To find the property name associated with a program, use
 -- > xprop | grep WM_CLASS
 myManageHook = composeAll . concat $
    [ [isDialog --> doFloat]
-   , [className =? c --> doFloat | c <- myClassFloats]
+   , [className =? c --> doCenterFloat | c <- myClassFloats]
    , [resource  =? r --> doIgnore | r <- myIgnores]
    , [className =? "Emacs" --> viewShift (myWorkspaces !! 2)]
    , [className =? "urxvt" --> doShift (myWorkspaces !! 0)]
    , [appName   =? "weechat" --> doShift (myWorkspaces !! 4)]
+   , [className   =? "Google-chrome-unstable" --> viewShift (myWorkspaces !! 1)]
    , [appName   =? "wifi-menu" --> doCenterFloat]
    , [isDialog --> doCenterFloat]
    , [isFullscreen --> (doF W.focusDown <+> doFullFloat)]
    ]
    where
      viewShift = doF . liftM2 (.) W.greedyView W.shift
-     myClassFloats  = ["Gimp", "VirtualBox", "Qalculate-gtk", "Vlc"]
+     myClassFloats  = ["Gimp", "VirtualBox", "Qalculate-gtk", "Vlc", "mpv"]
      myTitleFloats  = []
      myIgnores = ["desktop_window"]
 
@@ -211,29 +220,16 @@ myLayoutHook = avoidStruts
    $ onWorkspace "2" (Full ||| tiled ||| Mirror tiled)
    $ layouts
    where layouts = tiled ||| Mirror tiled ||| Full
-         tiled   = smartSpacing 10 $ gaps [(L,10),(R,10),(U,10),(D,10)] $ Tall nmaster delta ratio
+         tiled   = smartSpacing 5 $ gaps [(L,5),(R,5),(U,5),(D,5)] $ Tall nmaster delta ratio
          nmaster = 1
          delta   = 3/100
          ratio   = 3/5
 
 
-solarizedBase03     = "#002b36"
-solarizedBase02     = "#073642"
-solarizedBase01     = "#586e75"
-solarizedBase00     = "#657b83"
-solarizedBase0      = "#839496"
-solarizedBase1      = "#93a1a1"
-solarizedBase2      = "#eee8d5"
-solarizedBase3      = "#fdf6e3"
-solarizedYellow     = "#b58900"
-solarizedOrange     = "#cb4b16"
-solarizedRed        = "#dc322f"
-solarizedMagenta    = "#d33682"
-solarizedViolet     = "#6c71c4"
-solarizedBlue       = "#268bd2"
-solarizedCyan       = "#2aa198"
-solarizedGreen      = "#859900"
-
+confirm :: String -> X () -> X ()
+confirm m f = do
+  result <- dmenu [m]
+  when (result == m) f
 
 
 nxt :: (Eq a, Enum a, Bounded a) => a -> a
@@ -263,3 +259,22 @@ updateRedShift RedShiftEnabledMin = do
   spawn "killall redshift; notify-send -r 14 'RedShift' 'ON High'; redshift -r -t 4000:3000"
 updateRedShift RedShiftDisabled = do
   spawn "pkill -USR1 redshift; notify-send -r 14 'RedShift' 'OFF';"
+
+
+solarizedBase03     = "#002b36"
+solarizedBase02     = "#073642"
+solarizedBase01     = "#586e75"
+solarizedBase00     = "#657b83"
+solarizedBase0      = "#839496"
+solarizedBase1      = "#93a1a1"
+solarizedBase2      = "#eee8d5"
+solarizedBase3      = "#fdf6e3"
+solarizedYellow     = "#b58900"
+solarizedOrange     = "#cb4b16"
+solarizedRed        = "#dc322f"
+solarizedMagenta    = "#d33682"
+solarizedViolet     = "#6c71c4"
+solarizedBlue       = "#268bd2"
+solarizedCyan       = "#2aa198"
+solarizedGreen      = "#859900"
+
