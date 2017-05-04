@@ -133,7 +133,7 @@ main = do
       `additionalKeysP`
       [ ("M-p",             spawn "dmenu_recent -fn PragmataPro-13")
       , ("M-S-p",           spawn "passmenu -fn PragmataPro-13")
-      , ("M-r",             spawn "rofi -font 'Pragmata Pro 12' -combi-modi window,drun,run -show combi")
+      , ("M-r",             spawn "rofi -font 'Pragmata Pro 13' -combi-modi window,drun,run -show combi")
       , ("M-S-r",           spawn "autopass")
       , ("M-n",             refresh)
       , ("M-m",             windows W.focusMaster)
@@ -149,11 +149,10 @@ main = do
       , ("M-g",             spawn "google-chrome-unstable")
       , ("M-f",             spawn "firefox")
       , ("M-S-l",           spawn "slock") -- Lock the screen
---      , ("M-S-q",         confirm "Quit XMonad?" $ $io (exitWith ExitSuccess))
-      , ("M-S-q",           confirm "Quit XMonad?" $ spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Try to Quit xmonad nicely
+      , ("M-S-q",           confirm ["-fn", "PragmataPro-13"] "Quit XMonad?" $ spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Try to Quit xmonad nicely
       , ("M-S-<Backspace>", spawn "/bin/systemctl suspend")
       , ("M-S-<Delete>",    spawn "/bin/systemctl hibernate")
-      , ("M-q",             confirm "Recompile and restart XMonad?" $ spawn $ unlines [
+      , ("M-q",             confirm ["-fn", "PragmataPro-13"] "Recompile and restart XMonad?" $ spawn $ unlines [
 	    "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"
@@ -226,10 +225,10 @@ myLayoutHook = avoidStruts
          ratio   = 3/5
 
 
-confirm :: String -> X () -> X ()
-confirm m f = do
-  result <- dmenu [m]
-  when (result == m) f
+confirm :: [String] -> String -> X () -> X ()
+confirm o s f = do
+  result <- menuArgs "dmenu" o [s]
+  when (result == s) f
 
 
 nxt :: (Eq a, Enum a, Bounded a) => a -> a
