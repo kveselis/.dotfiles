@@ -1,0 +1,30 @@
+"*":
+  "atom-material-ui":
+    colors:
+      genAccent: true
+      paintCursor: true
+    fonts:
+      fontSize: 14
+    tabs:
+      compactTabs: true
+    treeView:
+      compactList: true
+    ui:
+      panelContrast: true
+  core:
+    projectHome: "/home/artis/projects"
+    telemetryConsent: "limited"
+    themes: [
+      "atom-material-ui"
+      "oceanic-next"
+    ]
+  editor:
+    fontFamily: "Fira Code"
+    fontSize: 15
+  emmet:
+    extensionsPath: "~/.config/emmet"
+  "exception-reporting":
+    userId: "91a4df0a-89fc-414c-8c50-b96e9512ac42"
+  "one-dark-ui": {}
+  welcome:
+    showOnStartup: false
