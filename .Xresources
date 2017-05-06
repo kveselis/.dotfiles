@@ -52,6 +52,8 @@ URxvt.font:                 xft:PragmataPro:size=12, \
 !xft:DejaVuSansMonoForPowerline Nerd Font:style=Book:size=12, \
 !xft:SauceCodePro Nerd Font:pixelsize=16, \
 
+rofi.font:                  PragmataPro 12
+
 ! Scrollbar
 URxvt.scrollStyle:          rxvt
 URxvt.scrollBar:            false
