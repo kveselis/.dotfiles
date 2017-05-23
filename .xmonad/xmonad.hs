@@ -18,7 +18,7 @@ import XMonad.Layout.Gaps
 import XMonad.Layout.Tabbed
 import XMonad.Layout.ToggleLayouts
 import XMonad.Layout.SimpleFloat
-import XMonad.Layout.Fullscreen
+-- import XMonad.Layout.Fullscreen
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Named
 
@@ -96,19 +96,19 @@ instance UrgencyHook LibNotifyUrgencyHook where
         safeSpawn "notify-send" [show name, "workspace: " ++ idx]
 
 main = do
-   xmproc <- spawnPipe "xmobar"
-   xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh defaultConfig
+   xmproc <- spawnPipe "killall xmobar; xmobar"
+   xmonad $ docks . ewmh $ withUrgencyHook LibNotifyUrgencyHook $ defaultConfig
       { modMask            = myModMask
       , terminal           = myTerminal
       , borderWidth        = myBorderWidth
       , normalBorderColor  = myNormalBorderColor
       , focusedBorderColor = myFocusedBorderColor
       , workspaces         = myWorkspaces
-      , startupHook        = myStartupHook
+      , startupHook        = setWMName "LG3D" <+> myStartupHook
       , manageHook         = manageSpawn <+> manageDocks <+> myManageHook
                              <+> namedScratchpadManageHook myScratchpads <+> manageHook defaultConfig
       , layoutHook         = smartBorders $ myLayoutHook
-      , handleEventHook    = mconcat [docksEventHook, handleEventHook defaultConfig]
+      , handleEventHook    = fullscreenEventHook <+> docksEventHook <+> handleEventHook defaultConfig
       , logHook            = dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
            { ppOutput          = hPutStrLn xmproc
            , ppTitle           = xmobarColor solarizedYellow "" . shorten myTitleLength
@@ -192,12 +192,13 @@ main = do
 
 
 myStartupHook = do
+  docksStartupHook
   setDefaultCursor xC_left_ptr
-  spawn "xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto"
+--  spawn "xrandr --output eDP1 --auto --output VGA1 --primary --right-of eDP1 --auto"
   spawn "killall redshift; redshift -r"
   spawn "~/.config/xmobar/scripts/vol-control status"
   spawn "~/bin/locker"
-  spawn "nextwall"
+  spawn "sleep 1; nextwall"
 
 -- To find the property name associated with a program, use
 -- > xprop | grep WM_CLASS
