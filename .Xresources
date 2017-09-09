@@ -46,11 +46,7 @@ URxvt.font:                 xft:PragmataPro:size=12, \
                             xft:InconsolataForPowerline Nerd Font:size=12, \
                             xft:WenQuanYi Bitmap Song:size=8, \
                             xft:FreeSerif:style=Regular, \
-                            xft:unifont:style=Medium:antialias=false
-!xft:PragmataPro:size=12, \
-!xft:InconsolataForPowerline Nerd Font:size=12, \
-!xft:DejaVuSansMonoForPowerline Nerd Font:style=Book:size=12, \
-!xft:SauceCodePro Nerd Font:pixelsize=16, \
+                            xft:unifont:style=Medium:size=8:antialias=false
 
 rofi.font:                  PragmataPro 12
 

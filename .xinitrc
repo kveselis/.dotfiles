@@ -52,6 +52,11 @@ udiskie &
 
 xset r rate 200 30
 
+# xinput list ; to list plugged in devices
+# xinput list-props 10 ; list device 10 properties. 10 is the device ID
+# mouse acceleration (mouse device ID=10)
+xinput --set-prop 10 279 -0.6 &
+
 # xsetroot -cursor_name left_ptr & #not used if added in xmonad.hs
 
 # hides mouse cursor while typing

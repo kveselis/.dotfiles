@@ -11,7 +11,7 @@ Config {
   , lowerOnStart = True
   , iconRoot = "/home/artis/.xmonad/icons"
   , commands = [ Run UnsafeXMonadLog
-               , Run Wireless "wlp2s0" ["-t", "<fc=#268bd2,#002b36><qualityipat></fc> <essid>", "--", "--quality-icon-pattern", "<icon=w/%%.xpm/>"] 100
+               , Run Wireless "wlp3s0" ["-t", "<fc=#268bd2,#002b36><qualityipat></fc> <essid>", "--", "--quality-icon-pattern", "<icon=w/%%.xpm/>"] 100
                , Run DynNetwork [
                      "-L", "500000",
                      "-H", "1500000",
@@ -32,5 +32,5 @@ Config {
                ]
   , sepChar = "%"
   , alignSep = "}{"
-  , template = " %UnsafeStdinReader% }{%battery% | <action=`urxvtc -name wifi-menu -e sudo wifi-menu`>%wlp2s0wi% %dynnetwork%</action> | %volume% <fc=#000000,#b58900> %kbd% </fc><fc=#000000,#2aa198> %date% </fc>"
+  , template = " %UnsafeStdinReader% }{%battery% | <action=`urxvtc -name wifi-menu -e sudo wifi-menu`>%wlp3s0wi% %dynnetwork%</action> | <action=`pavucontrol`>%volume%</action> <fc=#000000,#b58900> %kbd% </fc><fc=#000000,#2aa198> %date% </fc>"
 }

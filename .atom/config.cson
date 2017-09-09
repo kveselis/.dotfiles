@@ -20,14 +20,15 @@
       "oceanic-next"
     ]
   editor:
-    fontFamily: "Fira Code"
+    fontFamily: "FuraCode Nerd Font"
   emmet:
     extensionsPath: "~/.config/emmet"
   "exception-reporting":
     userId: "91a4df0a-89fc-414c-8c50-b96e9512ac42"
   "language-babel": {}
   "linter-ui-default":
-    panelHeight: 81
+    panelHeight: 139
+    showPanel: true
   "one-dark-ui": {}
   welcome:
     showOnStartup: false
