@@ -109,7 +109,7 @@ main = do
       , workspaces         = myWorkspaces
       , startupHook        = myStartupHook
       , manageHook         = manageSpawn <+> manageDocks <+> myManageHook
-                             <+> namedScratchpadManageHook myScratchpads <+> manageHook def
+                             <+> namedScratchpadManageHook myScratchpads <+> manageHook defaultConfig
       , layoutHook         = smartBorders $ myLayoutHook
       , handleEventHook    = mconcat [docksEventHook, handleEventHook def]
       , logHook            = dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
@@ -211,8 +211,11 @@ myManageHook = composeAll . concat $
    , [appName   =? a --> doCenterFloat | a <- myAppFloats]
    , [resource  =? r --> doIgnore | r <- myIgnores]
    , [className =? "Emacs" --> viewShift (myWorkspaces !! 2)]
+   , [className =? "urxvt" --> doShift (myWorkspaces !! 0)]
    , [appName   =? "weechat" --> doShift (myWorkspaces !! 4)]
    , [className   =? "Google-chrome-unstable" --> viewShift (myWorkspaces !! 1)]
+   , [appName   =? "wifi-menu" --> doCenterFloat]
+   , [isDialog --> doCenterFloat]
    , [isFullscreen --> (doF W.focusDown <+> doFullFloat)]
    ]
    where

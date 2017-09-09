@@ -1,12 +1,14 @@
-Config { font = "xft:Pragmata Pro:style=Regular:pixelsize=18:antialias=true"
-  , bgColor = "#002b36"
-  , fgColor = "#657b83"
-  , border = NoBorder
-  , borderColor = "black"
-  , hideOnStart = False
-  , persistent = False
-  , position = Top
-  , lowerOnStart = False
+Config {
+    font         = "xft:Pragmata Pro:style=Regular:pixelsize=18:antialias=true"
+  , bgColor      = "#002b36"
+  , fgColor      = "#657b83"
+  , border       = NoBorder
+  , borderColor  = "black"
+  , hideOnStart  = False
+  , allDesktops  = False
+  , persistent   = False
+  , position     = Top
+  , lowerOnStart = True
   , iconRoot = "/home/artis/.xmonad/icons"
   , commands = [ Run UnsafeXMonadLog
                , Run Wireless "wlp3s0" ["-t", "<fc=#268bd2,#002b36><qualityipat></fc> <essid>", "--", "--quality-icon-pattern", "<icon=w/%%.xpm/>"] 100
