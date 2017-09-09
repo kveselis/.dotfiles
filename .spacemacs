@@ -141,8 +141,8 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 5)
-                                (projects . 7))
+   dotspacemacs-startup-lists '((recents . 10)
+                                (projects . 10))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
@@ -170,7 +170,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("DejaVuSansMonoForPowerline Nerd Font";"Fira Mono";"InconsolataForPowerline Nerd Font";"DroidSansMonoForPowerline Nerd Font";"AnonymicePowerline Nerd Font";"BitstreamVeraSansMono Nerd Font";"FuraCode Nerd Font";"Monoid HalfLoose";"Source Code Pro";"PragmataPro";"Consolas";"Input Mono"
+   dotspacemacs-default-font '("DejaVuSansMono Nerd Font";"Fira Mono";"InconsolataForPowerline Nerd Font";"DroidSansMonoForPowerline Nerd Font";"AnonymicePowerline Nerd Font";"BitstreamVeraSansMono Nerd Font";"FuraCode Nerd Font";"Monoid HalfLoose";"Source Code Pro";"PragmataPro";"Consolas";"Input Mono"
                                :size 16
                                :weight normal
                                :width normal
@@ -255,7 +255,7 @@ values."
    ;; If non nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
    ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
    dotspacemacs-fullscreen-at-startup t
@@ -349,7 +349,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;;  (set-frame-font "SauceCodePro Nerd Font" nil t)
   ;;(set-fontset-font "fontset-default" 'unicode "NanumGothicCoding or Symbola or Arial Unicode MS or Noto Sans Symbols or Segoe UI Symbol")
 
-  ;; ⓐ       0 1 l $
+  ;; ⓐ       0 1 l $
 
   )
 
@@ -361,6 +361,8 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
+;; NeoTree config
+  (setq neo-theme 'ascii)
 
 ;; JavaScript React and web-mode
   (setq-default
@@ -467,7 +469,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (evil diminish smartparens xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode helm-core projectile avy helm web-mode unfill tagedit smeargle slim-mode scss-mode sass-mode pug-mode pandoc-mode ox-pandoc ht ox-gfm orgit org-projectile org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim mmm-mode markdown-toc markdown-mode magit-gitflow less-css-mode intero htmlize hlint-refactor hindent helm-hoogle helm-gitignore helm-css-scss helm-company helm-c-yasnippet haskell-snippets haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-mix flycheck-credo flycheck evil-magit magit magit-popup git-commit with-editor erlang emmet-mode elm-mode company-web web-completion-data company-statistics company-ghci company-ghc ghc haskell-mode company-cabal company-auctex cmm-mode clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider queue clojure-mode auto-yasnippet yasnippet auctex-latexmk auctex alchemist company elixir-mode ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+    (iedit packed org-category-capture hydra powerline undo-tree highlight dash seq async s evil diminish smartparens xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode helm-core projectile avy helm web-mode unfill tagedit smeargle slim-mode scss-mode sass-mode pug-mode pandoc-mode ox-pandoc ht ox-gfm orgit org-projectile org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim mmm-mode markdown-toc markdown-mode magit-gitflow less-css-mode intero htmlize hlint-refactor hindent helm-hoogle helm-gitignore helm-css-scss helm-company helm-c-yasnippet haskell-snippets haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-mix flycheck-credo flycheck evil-magit magit magit-popup git-commit with-editor erlang emmet-mode elm-mode company-web web-completion-data company-statistics company-ghci company-ghc ghc haskell-mode company-cabal company-auctex cmm-mode clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider queue clojure-mode auto-yasnippet yasnippet auctex-latexmk auctex alchemist company elixir-mode ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

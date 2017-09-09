@@ -73,7 +73,8 @@ myScratchpads =
     , NS "scratchHtop"    spawnHtop findHtop (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
     , NS "scratchNcmpcpp" spawnNcmpcpp findNcmpcpp (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
     , NS "scratchMixer"   spawnMixer findMixer (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
-    , NS "scratchQalc"    spawnQalc findQalc doFullFloat
+    , NS "scratchPavuctl" spawnPavuctl findPavuctl (customFloating $ W.RationalRect (1/3) (1/4) (1/3) (1/2))
+    , NS "scratchQalc"    spawnQalc findQalc (customFloating $ W.RationalRect (1/3) (1/4) (1/3) (1/2))
   ] where
       spawnTerm    = myTerminal ++ " -background rgba:0000/0000/0200/f000 -name scratchTerm"
       findTerm     = resource =? "scratchTerm"
@@ -83,8 +84,10 @@ myScratchpads =
       findNcmpcpp  = resource =? "scratchNcmpcpp"
       spawnMixer   = myTerminalc ++ " -name scratchMixer -e alsamixer"
       findMixer    = resource =? "scratchMixer"
-      spawnQalc   = "qalculate-gtk"
-      findQalc    = resource =? "qalculate-gtk"
+      spawnPavuctl = "pavucontrol"
+      findPavuctl  = resource =? "pavucontrol"
+      spawnQalc    = "qalculate-gtk"
+      findQalc     = resource =? "qalculate-gtk"
 
 
 -- Create notification popup when some window becomes urgent.
@@ -97,7 +100,7 @@ instance UrgencyHook LibNotifyUrgencyHook where
 
 main = do
    xmproc <- spawnPipe "xmobar"
-   xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh defaultConfig
+   xmonad $ withUrgencyHook LibNotifyUrgencyHook $ ewmh def
       { modMask            = myModMask
       , terminal           = myTerminal
       , borderWidth        = myBorderWidth
@@ -106,9 +109,9 @@ main = do
       , workspaces         = myWorkspaces
       , startupHook        = myStartupHook
       , manageHook         = manageSpawn <+> manageDocks <+> myManageHook
-                             <+> namedScratchpadManageHook myScratchpads <+> manageHook defaultConfig
+                             <+> namedScratchpadManageHook myScratchpads <+> manageHook def
       , layoutHook         = smartBorders $ myLayoutHook
-      , handleEventHook    = mconcat [docksEventHook, handleEventHook defaultConfig]
+      , handleEventHook    = mconcat [docksEventHook, handleEventHook def]
       , logHook            = dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
            { ppOutput          = hPutStrLn xmproc
            , ppTitle           = xmobarColor solarizedYellow "" . shorten myTitleLength
@@ -117,9 +120,9 @@ main = do
            , ppHidden          = xmobarColor solarizedBase1 solarizedBase03 . \s -> myInactiveWsp!!((read s::Int)-1)
            , ppHiddenNoWindows = xmobarColor solarizedBase02 solarizedBase03  . \s -> myInactiveWsp!!((read s::Int)-1)
            , ppSep             = xmobarColor solarizedBase01 "" " "
-	   , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
+           , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
            , ppLayout          =
-	              (\x -> case x of
+                    (\x -> case x of
                          "Full"  -> "<icon=" ++ myIconDir ++ "layout-full.xbm/>"
                          "Mirror SmartSpacing 5 Tall" -> "<icon=" ++ myIconDir ++ "layout-mirror-bottom.xbm/>"
 --                         "Mirror ResizableTall" -> "<icon=" ++ myIconDir ++ "layout-mirror-top.xbm/>"
@@ -127,7 +130,7 @@ main = do
 --                         "ResizableTall"        -> "<icon=" ++ myIconDir ++ "layout-tall-left.xbm/>"
                          "Simple Float"         -> "~"
                          _                      -> pad x
-                      )
+                     )
            }
       }
       `additionalKeysP`
@@ -144,7 +147,7 @@ main = do
       , ("M-o",             namedScratchpadAction myScratchpads "scratchNcmpcpp")
       , ("M-<Return>",      namedScratchpadAction myScratchpads "scratchTerm")
       , ("M-i",             namedScratchpadAction myScratchpads "scratchHtop")
-      , ("M-<F1>",          namedScratchpadAction myScratchpads "scratchMixer")
+      , ("M-<F1>",          namedScratchpadAction myScratchpads "scratchPavuctl")
       , ("M-e",             spawn "emacs")
       , ("M-g",             spawn "google-chrome-unstable")
       , ("M-f",             spawn "firefox")
@@ -153,7 +156,7 @@ main = do
       , ("M-S-<Backspace>", spawn "/bin/systemctl suspend")
       , ("M-S-<Delete>",    spawn "/bin/systemctl hibernate")
       , ("M-q",             confirm ["-fn", "PragmataPro-13"] "Recompile and restart XMonad?" $ spawn $ unlines [
-	    "xmonad --recompile"
+             "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"
            , "    NID=$(notify-send -u low 'XMonad' 'Recompiled and restarted.')"
@@ -164,8 +167,8 @@ main = do
         )
        -- Brightness Keys
       , ("<XF86Display>",           spawn "arandr")
-      , ("<XF86MonBrightnessUp>"  , spawn "xbacklight +2; notify-send -r 15 'Screen Brightness' \"$(printf '%.*f\n' 0 $(xbacklight -getf))\"")
-      , ("<XF86MonBrightnessDown>", spawn "xbacklight -2; notify-send -r 15 'Screen Brightness' \"$(printf '%.*f\n' 0 $(xbacklight -getf))\"")
+      , ("<XF86MonBrightnessUp>"  , spawn "xbacklight +5; notify-send -r 15 'Screen Brightness' \"$(printf '%.*f\n' 0 $(xbacklight -getf))\"")
+      , ("<XF86MonBrightnessDown>", spawn "xbacklight -5; notify-send -r 15 'Screen Brightness' \"$(printf '%.*f\n' 0 $(xbacklight -getf))\"")
       , ("<XF86KbdBrightnessUp>",   spawn "xbacklight -inc 25 -ctrl $(xbacklight -list | grep kbd_backlight)")
       , ("<XF86KbdBrightnessDown>", spawn "xbacklight -dec 25 -ctrl $(xbacklight -list | grep kbd_backlight)")
       , ("M-<F10>",                 spawn "xbacklight -inc 10 -ctrl $(xbacklight -list | grep kbd_backlight)")
@@ -194,6 +197,7 @@ main = do
 myStartupHook = do
   setDefaultCursor xC_left_ptr
   spawn "xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto"
+  spawn "xset r rate 200 30"
   spawn "killall redshift; redshift -r"
   spawn "~/.config/xmobar/scripts/vol-control status"
   spawn "~/bin/locker"
@@ -202,20 +206,19 @@ myStartupHook = do
 -- To find the property name associated with a program, use
 -- > xprop | grep WM_CLASS
 myManageHook = composeAll . concat $
-   [ [isDialog --> doFloat]
+   [ [isDialog --> doCenterFloat]
    , [className =? c --> doCenterFloat | c <- myClassFloats]
+   , [appName   =? a --> doCenterFloat | a <- myAppFloats]
    , [resource  =? r --> doIgnore | r <- myIgnores]
    , [className =? "Emacs" --> viewShift (myWorkspaces !! 2)]
-   , [className =? "urxvt" --> doShift (myWorkspaces !! 0)]
    , [appName   =? "weechat" --> doShift (myWorkspaces !! 4)]
    , [className   =? "Google-chrome-unstable" --> viewShift (myWorkspaces !! 1)]
-   , [appName   =? "wifi-menu" --> doCenterFloat]
-   , [isDialog --> doCenterFloat]
    , [isFullscreen --> (doF W.focusDown <+> doFullFloat)]
    ]
    where
      viewShift = doF . liftM2 (.) W.greedyView W.shift
-     myClassFloats  = ["Gimp", "VirtualBox", "Qalculate-gtk", "Vlc", "mpv"]
+     myClassFloats  = ["Gimp", "VirtualBox", "Vlc", "mpv"]
+     myAppFloats = ["wifi-menu"]
      myTitleFloats  = []
      myIgnores = ["desktop_window"]
 

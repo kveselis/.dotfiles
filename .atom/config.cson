@@ -1,10 +1,10 @@
 "*":
   "atom-material-ui":
     colors:
+      accentColor: "#af0010"
       genAccent: true
       paintCursor: true
-    fonts:
-      fontSize: 14
+    fonts: {}
     tabs:
       compactTabs: true
     treeView:
@@ -12,6 +12,7 @@
     ui:
       panelContrast: true
   core:
+    autoHideMenuBar: true
     projectHome: "/home/artis/projects"
     telemetryConsent: "limited"
     themes: [
@@ -19,12 +20,14 @@
       "oceanic-next"
     ]
   editor:
-    fontFamily: "Fira Code"
-    fontSize: 15
+    fontFamily: "FuraCode Nerd Font"
   emmet:
     extensionsPath: "~/.config/emmet"
   "exception-reporting":
     userId: "91a4df0a-89fc-414c-8c50-b96e9512ac42"
+  "linter-ui-default":
+    panelHeight: 139
+    showPanel: true
   "one-dark-ui": {}
   welcome:
     showOnStartup: false
