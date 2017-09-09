@@ -46,7 +46,6 @@ import XMonad.Util.NamedScratchpad (NamedScratchpad (..),
                                     namedScratchpadManageHook)
 
 
-
 myModMask            = mod4Mask
 myTerminal           = "urxvt"
 myTerminalc          = "urxvtc"
@@ -97,18 +96,18 @@ instance UrgencyHook LibNotifyUrgencyHook where
 
 main = do
    xmproc <- spawnPipe "killall xmobar; xmobar"
-   xmonad $ docks . ewmh $ withUrgencyHook LibNotifyUrgencyHook $ defaultConfig
+   xmonad $ docks . ewmh $ withUrgencyHook LibNotifyUrgencyHook $ def
       { modMask            = myModMask
       , terminal           = myTerminal
       , borderWidth        = myBorderWidth
       , normalBorderColor  = myNormalBorderColor
       , focusedBorderColor = myFocusedBorderColor
       , workspaces         = myWorkspaces
-      , startupHook        = setWMName "LG3D" <+> myStartupHook
+      , startupHook        = myStartupHook
       , manageHook         = manageSpawn <+> manageDocks <+> myManageHook
-                             <+> namedScratchpadManageHook myScratchpads <+> manageHook defaultConfig
+                             <+> namedScratchpadManageHook myScratchpads <+> manageHook def
       , layoutHook         = smartBorders $ myLayoutHook
-      , handleEventHook    = fullscreenEventHook <+> docksEventHook <+> handleEventHook defaultConfig
+      , handleEventHook    = fullscreenEventHook <+> docksEventHook <+> handleEventHook def
       , logHook            = dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
            { ppOutput          = hPutStrLn xmproc
            , ppTitle           = xmobarColor solarizedYellow "" . shorten myTitleLength
@@ -117,9 +116,9 @@ main = do
            , ppHidden          = xmobarColor solarizedBase1 solarizedBase03 . \s -> myInactiveWsp!!((read s::Int)-1)
            , ppHiddenNoWindows = xmobarColor solarizedBase02 solarizedBase03  . \s -> myInactiveWsp!!((read s::Int)-1)
            , ppSep             = xmobarColor solarizedBase01 "" " "
-	   , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
+           , ppUrgent          = xmobarColor solarizedRed solarizedBase03 . \s -> myActiveWsp!!((read s::Int)-1)
            , ppLayout          =
-	              (\x -> case x of
+                      (\x -> case x of
                          "Full"  -> "<icon=" ++ myIconDir ++ "layout-full.xbm/>"
                          "Mirror SmartSpacing 5 Tall" -> "<icon=" ++ myIconDir ++ "layout-mirror-bottom.xbm/>"
 --                         "Mirror ResizableTall" -> "<icon=" ++ myIconDir ++ "layout-mirror-top.xbm/>"
@@ -153,7 +152,7 @@ main = do
       , ("M-S-<Backspace>", spawn "/bin/systemctl suspend")
       , ("M-S-<Delete>",    spawn "/bin/systemctl hibernate")
       , ("M-q",             confirm ["-fn", "PragmataPro-13"] "Recompile and restart XMonad?" $ spawn $ unlines [
-	    "xmonad --recompile"
+             "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"
            , "    NID=$(notify-send -u low 'XMonad' 'Recompiled and restarted.')"
@@ -194,7 +193,7 @@ main = do
 myStartupHook = do
   docksStartupHook
   setDefaultCursor xC_left_ptr
---  spawn "xrandr --output eDP1 --auto --output VGA1 --primary --right-of eDP1 --auto"
+  spawn "xrandr --output eDP1 --auto --output VGA1 --primary --right-of eDP1 --auto"
   spawn "killall redshift; redshift -r"
   spawn "~/.config/xmobar/scripts/vol-control status"
   spawn "~/bin/locker"

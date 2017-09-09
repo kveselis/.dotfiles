@@ -48,8 +48,7 @@ fi
 # manages removeable media
 udiskie &
 
-# moved to xmonad
-# xrandr --output eDP1 --auto --output DP2 --primary --right-of eDP1 --auto
+# xrandr --output eDP1 --auto --output VGA1 --primary --right-of eDP1 --auto
 
 xset r rate 200 30
 

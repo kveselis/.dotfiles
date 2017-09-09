@@ -4,7 +4,7 @@ Xcursor.theme: OpenZone_White_Slim
 ! Xft settings
 !-------------------------------------------------------------------------------
 
-Xft.dpi:                    110
+Xft.dpi:                    96
 Xft.lcdfilter:              lcddefault
 Xft.antialias:              true
 Xft.autohint:               false
@@ -42,7 +42,7 @@ URxvt.letterSpace:          0
 ! Fonts
 URxvt.allow_bold:           false
 URxvt.font:                 xft:PragmataPro:size=12, \
-                            xft:DejaVuSansMonoForPowerline Nerd Font:style=Book:pixelsize=16, \
+                            xft:DejaVuSansMono Nerd Font:style=Book:pixelsize=16, \
                             xft:InconsolataForPowerline Nerd Font:size=12, \
                             xft:WenQuanYi Bitmap Song:size=8, \
                             xft:FreeSerif:style=Regular, \

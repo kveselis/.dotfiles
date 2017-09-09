@@ -6,4 +6,5 @@ let g:airline_powerline_fonts = 1
 
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
+Plug 'powerline/powerline', { 'rtp': 'powerline/bindings/vim' }
 call plug#end()
