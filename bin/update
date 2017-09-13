@@ -5,4 +5,12 @@ sudo true
 COUNTRY=$(mycountry)
 
 sudo reflector --country $COUNTRY -l 200 -p http --sort rate --save /etc/pacman.d/mirrorlist || true
-yaourt -Syyu --noconfirm
+
+if [ "$1" == "-a" ] 
+then
+   echo "Updating all packages.."
+   yaourt -Syyua
+else
+   echo "Updating main packages.."
+   yaourt -Syyu --noconfirm
+fi	
