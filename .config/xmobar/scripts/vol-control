@@ -1,0 +1,40 @@
+#!/bin/sh
+
+PIPE=$XDG_RUNTIME_DIR/volume-display
+
+[ -p "$PIPE" ] || mkfifo "$PIPE"
+
+if [ $# -eq 1 ]; then
+    case $1 in
+        "down")
+            amixer -q -D pulse set Master 2%- unmute ;;
+        "up")
+            amixer -q -D pulse set Master 2%+ unmute ;;
+        "toggle")
+            amixer -q -D pulse set Master toggle ;;
+        "status")
+            ;;
+   esac
+fi
+
+mute=`amixer get Master | awk -F'[]%[]' '/%/ {print $5}' | head -n 1`
+vol=`amixer get Master | awk -F'[]%[]' '/%/ {print $2}' | head -n 1`
+
+if [ -z "$vol" ]; then
+    bar="volume-mute.xpm"
+elif [ "$vol" -eq "0" ]; then
+    bar="volume-mute.xpm"
+elif [ "$vol" -lt "38" ]; then
+    bar="volume-min.xpm"
+elif [ "$vol" -lt "88" ]; then
+    bar="volume-mid.xpm"
+else
+    bar="volume-max.xpm"
+fi
+
+if [ "$mute" == "off" ]
+then
+    echo "<fc=#dc322f><icon=v/volume-mute.xpm/></fc> $vol"> "$PIPE"
+else
+    echo "<fc=#2aa198><icon=v/$bar/></fc> $vol"> "$PIPE"
+fi

@@ -1,0 +1,9 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "editor.fontFamily": "'Fira Code','Input Mono Narrow','DejaVuSansMonoForPowerline Nerd Font','Droid Sans Mono', 'Courier New', monospace, 'Droid Sans Fallback'",
+    "workbench.colorTheme": "One Monokai",
+    "workbench.iconTheme": "vs-seti",
+    "editor.tabSize": 2,
+    "editor.lineHeight": 20,
+    "editor.fontLigatures": true
+}

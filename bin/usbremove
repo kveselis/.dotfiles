@@ -1,0 +1,3 @@
+#!/bin/bash
+
+udiskie-umount /dev/sdb1 --force --detach

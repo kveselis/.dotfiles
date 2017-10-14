@@ -1,0 +1,60 @@
+#!/bin/bash
+# Script to set the set sound volume on the Toshiba Chromebook CB30 that
+# has been enriched w/ Linux by Crouton: 
+# (https://github.com/dnschneid/crouton).
+# May work on other chromebooks too.
+# This script NEEDS amixer, Zenity (dialog screens), notify-osd and 
+# libnotify-bin.
+#  || 
+#  ||
+#  ||
+#  \/
+# There are 3 sorts "sound cards" that you can alter settings of on the Chromebook CB30 w. amixer.
+# Use the command 'amixer -c1' to get a vague idea of what card -c0 is, for example.
+# -c0    = the HDMI audio output
+# -c1    = the analogue ALSA device (speakers, mini-jack out etc.)
+# <null> = cras? (= chromium audio server?)
+card="-c1"
+
+
+###################
+# START OF SCRIPT #
+###################
+# First, my amateurish way of getting some output from amixer that contains the current volume setting:
+volume=`amixer $card get Master | grep Playback`
+
+# Then cut the first 72 characters from that string because they are not useful:
+volume=${volume:72}
+# Now cut a "[" if it is there, then cut last 17 characters:
+# Note: the "[" is a special character for sed. One must use the escape character "\[" for it.
+volume=$( echo "$volume" | sed 's/\[//' )
+volume=${volume::-17}
+# , and finally cut the "%" if it is there
+volume=$( echo "$volume" | sed 's/\%//' )
+
+# Now correct in case the volume was already set to 100% because then too 
+# many characters have been cut in the previous step: 
+testval=$volume
+if [ $volume == "10" ]
+   then volume=100
+fi
+
+
+echo "The current volume setting is: $volume%"
+value=$(zenity --scale --title="Audio" --text="Set sound volume." --value="$volume" --min-value="0" --max-value="100")
+echo "New volume = $value%"
+
+# amixer set Master $value
+amixer $card set Master $value%
+
+# If zero value then notify that old value is kept, else notify new value.
+if [ -z "$value" ] 
+   then
+   notify-send -t 2000  "Sound volume kept at $volume%."
+   exit
+   else
+   notify-send -t 2000  "Sound volume is now set to $value%."
+   exit
+fi
+
+exit

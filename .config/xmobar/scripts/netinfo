@@ -19,7 +19,7 @@ getQuality() {
     current="$(iw dev $1 link | awk '$1 == "signal:" {print 100 - (0 - $2 - 35)*100/60}')" #scale -35 -95 dBm
     #current=$(sudo iwconfig 2>/dev/null | grep 'Link Quality' | cut -d '=' -f 2 | cut -d ' ' -f 1)
     #current=$(echo "$current*100" | bc -l | cut -d. -f 1)
-    printf %s "$(vbar $current)"
+    printf %s "$(./vbar $current)"
 }
 
 INTERFACE=$(getInterface)

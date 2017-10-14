@@ -6,13 +6,15 @@
 # Nicely terminates all windows, and, if everything's fine, terminate
 # XMonad.
 
+notify-send -t 5000 -u normal "Closing xmonad..."
+
 wait_for_termination() {
 	# Returns 0 after the window ID $1 doesn't exists anymore (ie,
 	# doesn't appear in the output of wmctrl -l). If window still
 	# exists after $2 seconds, returns -1.
 
     end=$(($SECONDS+$2))
-    
+
 	while [ $SECONDS -lt $end ]; do
 		if [[ -z `wmctrl -l | grep "^$1\s"` ]]; then
 			return 0;
@@ -35,7 +37,7 @@ done
 if [[ -z `wmctrl -l` ]]; then
 	kill $PPID
 else
-	notify-send -u normal "Quit failed" "Relaunching termination script." 
-	~/.xmonad/quit-xmonad.sh 
+	notify-send -u normal "Quit failed" "Relaunching termination script."
+	~/.xmonad/quit-xmonad.sh
 fi
 

@@ -34,27 +34,36 @@ fi
 
 # Start urxvtd, if installed.
 if which urxvtd >/dev/null 2>&1; then
-	mkdir -p "$HOME/.urxvt" && rm -f "$HOME/.urxvt/"urxvtd-*
-	export RXVT_SOCKET="$HOME/.urxvt/urxvtd-$(hostname)-$$"
-	urxvtd -f -o -q
+  mkdir -p "$HOME/.urxvt" && rm -f "$HOME/.urxvt/"urxvtd-*
+  export RXVT_SOCKET="$HOME/.urxvt/urxvtd-$(hostname)-$$"
+  urxvtd -f -o -q
 fi
 
-VBoxClient --clipboard 
-VBoxClient --draganddrop 
-VboxClient --seamless 
-VBoxClient --display 
-VBoxClient --checkhostversion
+#VBoxClient --clipboard
+#VBoxClient --draganddrop
+#VboxClient --seamless
+#VBoxClient --display
+#VBoxClient --checkhostversion
 
-#xrandr -s 1920x1080
+# manages removeable media
+udiskie &
+
+# xrandr --output eDP1 --auto --output VGA1 --primary --right-of eDP1 --auto
+
 xset r rate 200 30
+
+# xinput list ; to list plugged in devices
+# xinput list-props 10 ; list device 10 properties. 10 is the device ID
+# mouse acceleration (mouse device ID=10)
+xinput --set-prop 10 279 -0.6 &
 
 # xsetroot -cursor_name left_ptr & #not used if added in xmonad.hs
 
 # hides mouse cursor while typing
 xbanish &
 
-# now done in xmonad.hs
-# feh --bg-scale ~/Pictures/bg1.jpg
+# can be done in xmonad.hs
+# feh --bg-fill ~/Pictures/wallpapers/default.jpg
 
 # not working on VM
 compton -b
@@ -64,4 +73,3 @@ compton -b
 start-pulseaudio-x11 &
 
 exec xmonad
-

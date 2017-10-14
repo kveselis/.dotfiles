@@ -1,0 +1,4 @@
+#!/bin/bash
+
+IP=$(myip)
+geoiplookup $IP | awk -F ', ' '{print $2}'

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo true
+
+sudo tlp fullcharge BAT0
+sudo tlp fullcharge BAT1
+
