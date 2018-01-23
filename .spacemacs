@@ -37,43 +37,40 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
+     ;;ivy
      auto-completion
      better-defaults
-     emacs-lisp
+     evil-cleverparens
      git
-     markdown
+     version-control
+     spell-checking
+     syntax-checking
      (org :variables
           org-enable-github-support t
-          org-projectile-file "TODOs.org"
-          )
+          org-projectile-file "TODOs.org")
      (shell :variables
              shell-default-shell 'eshell
              shell-default-height 30
              shell-default-position 'bottom)
-     ;; spell-checking
-     ;; syntax-checking
-     ;; version-control
+     emacs-lisp
      (clojure :variables
               clojure-enable-fancify-symbols nil)
-     evil-cleverparens
-     ;;haskell
      (haskell :variables
               haskell-enable-hindent-style "cramer"
               ;;haskell-enable-shm-support t
               haskell-enable-ghc-mod-support t
-              haskell-enable-company-mode t
-              )
+              haskell-enable-company-mode t)
      erlang
      elixir
      elm
-     html
-     (latex :variables
-            latex-enable-auto-fill t
-            )
+     java
      javascript
-     react
-     ;;windows-scripts
+     html
+     markdown
+     (latex :variables
+            latex-enable-auto-fill nil)
      pandoc
+     ;;themes-megapack
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -83,7 +80,11 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(firebelly-theme
+                                    pastels-on-dark-theme
+                                    tronesque-theme
+                                    zonokai-theme
+                                    niflheim-theme)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -151,27 +152,46 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(misterioso
-                         spacemacs-dark
-                         spacemacs-light
-                         solarized-light
-                         solarized-dark
-                         leuven
-                         monokai
-                         zenburn
-                         moe-light
-                         moe-dark
-                         ample
-                         ample-zen
+   dotspacemacs-themes '(jazz
+                         darktooth
                          gruvbox
-                         flatui
-                         flatland
+                         wilson
+                         ;;misterioso
+                         ;;spacemacs-dark
+                         ;;spacemacs-light
+                         ;;solarized-light
+                         ;;solarized-dark
+                         ;;leuven
+                         ;;monokai
+                         ;;zenburn
+                         ;;hc-zenburn
+                         ;;moe-light
+                         ;;moe-dark
+                         ;;ample
+                         ;;ample-flat
+                         ;;gruvbox-dark-hard
+                         ;;gruvbox-dark-soft
+                         ;;gruvbox-light-medium
+                         ;;flatui
+                         ;;flatland
+                         ;;majapahit-dark
+                         ;;darkburn
+                         ;;sanityinc-tomorrow-blue
+                         ;;sanityinc-tomorrow-eighties
+                         ;;sanityinc-tomorrow-night
+                         ;;sanityinc-solarized-light
+                         ;;clues
+                         ;;alect-black
+                         ;;afternoon
+                         ;;dichromacy
+                         ;;wombat
+                         ;;whiteboard
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("DejaVuSansMono Nerd Font";"Fira Mono";"InconsolataForPowerline Nerd Font";"DroidSansMonoForPowerline Nerd Font";"AnonymicePowerline Nerd Font";"BitstreamVeraSansMono Nerd Font";"FuraCode Nerd Font";"Monoid HalfLoose";"Source Code Pro";"PragmataPro";"Consolas";"Input Mono"
+   dotspacemacs-default-font '("Iosevka";"Fira Code";"DejaVuSansMono Nerd Font";"Source Code Pro";"InconsolataForPowerline Nerd Font";"DroidSansMonoForPowerline Nerd Font";"AnonymicePowerline Nerd Font";"BitstreamVeraSansMono Nerd Font";"FuraCode Nerd Font";"Monoid HalfLoose";"PragmataPro";"Consolas";"Input Mono"
                                :size 16
                                :weight normal
                                :width normal
@@ -337,20 +357,15 @@ values."
 It is called immediately after `dotspacemacs/init', before layer configuration
 executes.
  This function is mostly useful for variables that need to be set
-before packages are loaded. If you are unsure, you should try in setting them in
+ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
 
-  ;;(set-fontset-font "fontset-startup" nil "Droid Sans Fallback" nil 'append)
+  ;;This has to be done in order to use some themes on startup (gruvbox, jazz)
+  (load-file "~/.emacs.d/elpa/dash-20180118.743/dash.el")
+  (load-file "~/.emacs.d/elpa/autothemer-20170112.1324/autothemer.el")
 
   ;;(set-fontset-font t '(#x2460 . #xF5FF) "FuraCode Nerd Font")
-  (set-fontset-font "fontset-default" '(#x0000 . #xFFFF) (font-spec :size 16 :name "Symbola"))
-  ;;(set-fontset-font "fontset-default" '(#xffff . #xf5ff) (font-spec :size 16 :name "SauceCodePro Nerd Font"))
-  ;;  (set-frame-font "InconsolataForPowerline Nerd Font" nil t)
-  ;;  (set-frame-font "FuraCode Nerd Font" nil t)
-  ;;  (set-frame-font "SauceCodePro Nerd Font" nil t)
-  ;;(set-fontset-font "fontset-default" 'unicode "NanumGothicCoding or Symbola or Arial Unicode MS or Noto Sans Symbols or Segoe UI Symbol")
-
-  ;; ⓐ       0 1 l $
+  (set-fontset-font "fontset-default" '(#x0000 . #xFFFF) (font-spec :size 16 :name "Iosevka"))
 
   )
 
@@ -362,10 +377,14 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
 
-;; NeoTree config
+;; * NeoTree config
   (setq neo-theme 'ascii)
 
-;; JavaScript React and web-mode
+;; * Java settings
+  (setq eclim-eclipse-dirs '("~/.eclipse/eclipse")
+        eclim-executable "~/.eclipse/org.eclipse.platform_4.7.1_155965261_linux_gtk_x86_64/eclim")
+
+;; * JavaScript React and web-mode
   (setq-default
    ;; js2-mode
    js2-basic-offset 2
@@ -380,10 +399,8 @@ you should place your code here."
     (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
-;;--------------
 
-  (setq-default line-spacing 2)
-
+;; * Haskell
   (setq
    ghc-ghc-options '("-fno-warn-missing-signatures")
    haskell-compile-cabal-build-command "stack build --fast"
@@ -392,6 +409,19 @@ you should place your code here."
   (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
   ;; (add-hook 'haskell-mode-hook 'structured-haskell-mode)
 
+
+;; * Visuals
+  (setq-default line-spacing 2)
+  (global-hl-line-mode -1)
+  (setq powerline-default-separator 'arrow)
+  (spaceline-compile)
+  ;; Transparency by default
+  (set-frame-parameter (selected-frame) 'alpha
+                       (cons dotspacemacs-active-transparency
+                             dotspacemacs-inactive-transparency))
+
+
+
   (set-language-environment 'UTF-8)
   (setq locale-coding-system 'utf-8)
   (set-terminal-coding-system 'utf-8)
@@ -399,14 +429,14 @@ you should place your code here."
   (prefer-coding-system 'utf-8)
   (setq default-buffer-file-coding-system 'utf-8-unix)
 
-  (global-hl-line-mode -1)
 
   (sp-use-smartparens-bindings)
-
   (spacemacs/toggle-evil-cleverparens-on)
+
+;; * Clojure
   (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
 
-  ;; LaTex stuff
+;; * LaTex stuff
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
   (setq-default TeX-engine 'luatex)
 ;;  (eval-after-load 'tex
@@ -422,23 +452,7 @@ you should place your code here."
 ;;             TeX-expand-list)))
 
 
-;;  (setq redisplay-dont-pause t
-;;        scroll-margin 1
-;;        scroll-step 1
-;;        scroll-conservatively 10000
-;;        scroll-preserve-screen-position 1)
-
-  (setq powerline-default-separator 'arrow)
-  (spaceline-compile)
-
-
-  ;; Transparency by default
-  (set-frame-parameter (selected-frame) 'alpha
-                       (cons dotspacemacs-active-transparency
-                             dotspacemacs-inactive-transparency))
-
-
-  ;; Org mode stuff
+;; * Org mode stuff
   (with-eval-after-load 'org (setq org-agenda-files
                                    '("~/org"))
                              (setq org-enforce-todo-dependencies t)
@@ -468,14 +482,6 @@ you should place your code here."
 ;; auto-generate custom variable definitions.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (iedit packed org-category-capture hydra powerline undo-tree highlight dash seq async s evil diminish smartparens xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode helm-core projectile avy helm web-mode unfill tagedit smeargle slim-mode scss-mode sass-mode pug-mode pandoc-mode ox-pandoc ht ox-gfm orgit org-projectile org-present org-pomodoro alert log4e gntp org-download ob-elixir mwim mmm-mode markdown-toc markdown-mode magit-gitflow less-css-mode intero htmlize hlint-refactor hindent helm-hoogle helm-gitignore helm-css-scss helm-company helm-c-yasnippet haskell-snippets haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-mix flycheck-credo flycheck evil-magit magit magit-popup git-commit with-editor erlang emmet-mode elm-mode company-web web-completion-data company-statistics company-ghci company-ghc ghc haskell-mode company-cabal company-auctex cmm-mode clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg cider-eval-sexp-fu cider queue clojure-mode auto-yasnippet yasnippet auctex-latexmk auctex alchemist company elixir-mode ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
