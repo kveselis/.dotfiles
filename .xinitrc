@@ -72,4 +72,7 @@ compton -b
 
 start-pulseaudio-x11 &
 
+# mouse gestures. use `libinput-gestures-setup stop` to stop
+#libinput-gestures-setup start
+
 exec xmonad
