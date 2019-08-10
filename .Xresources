@@ -34,25 +34,34 @@ URxvt.visualBell:           false
 URxvt.loginShell:           true
 
 URxvt.saveLines:            65535
-URxvt.internalBorder:       3
+URxvt.internalBorder:       5
 URxvt.lineSpace:            0
 ! Fix font space
 URxvt.letterSpace:          0
 
 ! Fonts
 URxvt.allow_bold:           false
-URxvt.font:                 xft:PragmataPro:size=12, \
+URxvt.font:                 xft:PragmataPro Liga:size=12, \
+                            xft:Iosevka SS09:size=12, \
                             xft:DejaVuSansMono Nerd Font:style=Book:pixelsize=16, \
                             xft:InconsolataForPowerline Nerd Font:size=12, \
                             xft:WenQuanYi Bitmap Song:size=8, \
                             xft:FreeSerif:style=Regular, \
                             xft:unifont:style=Medium:size=8:antialias=false
 
-rofi.font:                  PragmataPro 12
+rofi.font:                  PragmataPro Liga 12
+
 
 ! Scrollbar
 URxvt.scrollStyle:          rxvt
 URxvt.scrollBar:            false
+! do not scroll with output
+URxvt*scrollTtyOutput: 	    false
+! scroll in relation to buffer (with mouse scroll or Shift+Page Up)
+URxvt*scrollWithBuffer:     true
+! scroll back to the bottom on keypress
+URxvt*scrollTtyKeypress:    true
+
 
 ! Perl extensions
 URxvt.perl-lib:             /usr/lib/urxvt/perl
@@ -70,7 +79,6 @@ URxvt.cursorUnderline:      false
 
 ! Pointer
 URxvt.pointerBlank:         true
-
 
 
 !! drop in Solarized colorscheme for Xresources/Xdefaults

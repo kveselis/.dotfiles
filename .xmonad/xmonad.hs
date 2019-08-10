@@ -132,9 +132,9 @@ main = do
            }
       }
       `additionalKeysP`
-      [ ("M-p",             spawn "dmenu_recent -fn PragmataPro-13")
-      , ("M-S-p",           spawn "passmenu -fn PragmataPro-13")
-      , ("M-r",             spawn "rofi -combi-modi window,drun,run -show combi")
+      [ ("M-p",             spawn "dmenu_recent -fn 'PragmataPro Liga-13'")
+      , ("M-S-p",           spawn "passmenu -fn 'PragmataPro Liga-13'")
+      , ("M-r",             spawn "rofi -combi-modi window,drun,run -show combi -font 'PragmataPro Liga 12'")
       , ("M-S-r",           spawn "autopass")
       , ("M-n",             refresh)
       , ("M-m",             windows W.focusMaster)
@@ -150,10 +150,10 @@ main = do
       , ("M-g",             spawn "google-chrome-unstable")
       , ("M-f",             spawn "firefox")
       , ("M-S-l",           spawn "slock") -- Lock the screen
-      , ("M-S-q",           confirm ["-fn", "PragmataPro-13"] "Quit XMonad?" $ spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Try to Quit xmonad nicely
+      , ("M-S-q",           confirm ["-fn", "PragmataPro Liga-13"] "Quit XMonad?" $ spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Try to Quit xmonad nicely
       , ("M-S-<Backspace>", spawn "/bin/systemctl suspend")
       , ("M-S-<Delete>",    spawn "/bin/systemctl hibernate")
-      , ("M-q",             confirm ["-fn", "PragmataPro-13"] "Recompile and restart XMonad?" $ spawn $ unlines [
+      , ("M-q",             confirm ["-fn", "PragmataPro Liga-13"] "Recompile and restart XMonad?" $ spawn $ unlines [
              "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"

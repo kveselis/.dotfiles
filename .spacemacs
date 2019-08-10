@@ -33,7 +33,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(typescript
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -45,10 +45,13 @@ This function should only modify configuration layer settings."
      better-defaults
      git
      version-control
+     github
      spell-checking
      syntax-checking
      neotree
      (org :variables
+          org-enable-reveal-js-support t
+          org-reveal-root "file:///home/artis/projects/reveal.js"
           org-enable-github-support t
           org-projectile-file "TODOs.org")
      (shell :variables
@@ -76,6 +79,7 @@ This function should only modify configuration layer settings."
      yaml
      terraform
      ansible
+     docker
      ;;(latex :variables
      ;;       latex-enable-auto-fill nil)
      ;pandoc
@@ -554,6 +558,14 @@ before packages are loaded."
     (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
 
+
+ (setq
+  writeroom-width 100
+  writeroom-extra-line-spacing 0.5)
+
+ ;;(with-eval-after-load 'writeroom-mode
+ ;;  )
+
   ;; * Haskell
   (setq
    ghc-ghc-options '("-fno-warn-missing-signatures")
@@ -565,6 +577,7 @@ before packages are loaded."
 
   ;; * Visuals
   (setq-default line-spacing 2)
+  (global-visual-line-mode 1) ;; Makes lines wrap at word boundaries and more (http://ergoemacs.org/emacs/emacs_long_line_wrap.html)
   (global-hl-line-mode -1)
   (set-frame-parameter (selected-frame) 'alpha
                        (cons dotspacemacs-active-transparency
@@ -643,7 +656,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (impatient-mode dumb-jump dante helm helm-core cider clojure-mode zenburn-theme yasnippet-snippets yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit symon sublime-themes string-inflection spaceline-all-the-icons solarized-theme smeargle slim-mode shell-pop sesman scss-mode sayid sass-mode restart-emacs rainbow-delimiters queue pug-mode popwin persp-mode pcre2el password-generator paradox ox-gfm overseer orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file neotree nameless mwim mvn multi-term move-text monokai-theme moe-theme mmm-mode meghanada maven-test-mode markdown-toc majapahit-theme magit-svn magit-gitflow macrostep lorem-ipsum livid-mode link-hint lcr json-navigator json-mode js2-refactor js-doc jinja2-mode jazz-theme intero indent-guide hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme groovy-mode groovy-imports gradle-mode google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy font-lock+ flyspell-correct-helm flycheck-pos-tip flycheck-haskell flx-ido flatui-theme flatland-theme fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help ensime emmet-mode elisp-slime-nav editorconfig dotenv-mode diminish diff-hl define-word darktooth-theme darkburn-theme csv-mode counsel-projectile company-web company-terraform company-tern company-statistics company-go company-ghci company-ghc company-emacs-eclim company-cabal company-ansible column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clojure-cheatsheet clj-refactor clean-aindent-mode cider-eval-sexp-fu centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile ansible-doc ansible ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (tide typescript-mode import-js grizzl add-node-modules-path zenburn-theme yasnippet-snippets yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org tagedit symon symbol-overlay sublime-themes string-inflection spaceline-all-the-icons solarized-theme smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pug-mode prettier-js popwin persp-mode pcre2el password-generator paradox ox-gfm overseer orgit org-re-reveal org-projectile org-present org-pomodoro org-mime org-download org-cliplink org-bullets org-brain open-junk-file neotree nameless mwim mvn multi-term move-text monokai-theme moe-theme mmm-mode meghanada maven-test-mode markdown-toc majapahit-theme magit-svn magit-gitflow macrostep lsp-haskell lorem-ipsum livid-mode link-hint json-navigator json-mode js2-refactor js-doc jinja2-mode jazz-theme intero indent-guide impatient-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-hoogle helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme groovy-mode groovy-imports gradle-mode google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md fuzzy font-lock+ flyspell-correct-helm flycheck-pos-tip flycheck-package flycheck-haskell flx-ido flatui-theme flatland-theme fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help ensime emmet-mode elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish diff-hl devdocs define-word darktooth-theme darkburn-theme dante csv-mode counsel-projectile company-web company-terraform company-tern company-statistics company-go company-ghci company-ghc company-emacs-eclim company-cabal company-ansible column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized cmm-mode clues-theme clojure-snippets clean-aindent-mode cider-eval-sexp-fu cider centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile ansible-doc ansible ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
