@@ -1,5 +1,5 @@
 Config {
-    font         = "xft:Pragmata Pro:style=Regular:pixelsize=18:antialias=true"
+    font         = "xft:PragmataPro Liga:style=Regular:pixelsize=18:antialias=true"
   , bgColor      = "#002b36"
   , fgColor      = "#657b83"
   , border       = NoBorder

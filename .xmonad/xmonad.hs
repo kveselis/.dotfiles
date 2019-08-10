@@ -110,7 +110,7 @@ main = do
       , startupHook        = myStartupHook
       , manageHook         = manageSpawn <+> manageDocks <+> myManageHook
                              <+> namedScratchpadManageHook myScratchpads <+> manageHook def
-      , layoutHook         = smartBorders $ myLayoutHook
+      , layoutHook         = myLayoutHook
       , handleEventHook    = mconcat [docksEventHook, handleEventHook def]
       , logHook            = dynamicLogWithPP . namedScratchpadFilterOutWorkspacePP $ xmobarPP
            { ppOutput          = hPutStrLn xmproc
@@ -124,19 +124,17 @@ main = do
            , ppLayout          =
                     (\x -> case x of
                          "Full"  -> "<icon=" ++ myIconDir ++ "layout-full.xbm/>"
-                         "Mirror SmartSpacing 5 Tall" -> "<icon=" ++ myIconDir ++ "layout-mirror-bottom.xbm/>"
---                         "Mirror ResizableTall" -> "<icon=" ++ myIconDir ++ "layout-mirror-top.xbm/>"
-                         "SmartSpacing 5 Tall" -> "<icon=" ++ myIconDir ++ "layout-tall-right.xbm/>"
---                         "ResizableTall"        -> "<icon=" ++ myIconDir ++ "layout-tall-left.xbm/>"
+                         "Mirror Spacing Tall" -> "<icon=" ++ myIconDir ++ "layout-mirror-bottom.xbm/>"
+                         "Spacing Tall" -> "<icon=" ++ myIconDir ++ "layout-tall-right.xbm/>"
                          "Simple Float"         -> "~"
                          _                      -> pad x
                      )
            }
       }
       `additionalKeysP`
-      [ ("M-p",             spawn "dmenu_recent -fn PragmataPro-13")
-      , ("M-S-p",           spawn "passmenu -fn PragmataPro-13")
-      , ("M-r",             spawn "rofi -combi-modi window,drun,run -show combi")
+      [ ("M-p",             spawn "dmenu_recent -fn 'PragmataPro Liga-13'")
+      , ("M-S-p",           spawn "passmenu -fn 'PragmataPro Liga-13'")
+      , ("M-r",             spawn "rofi -combi-modi window,drun,run -show combi -font 'PragmataPro Liga 12'")
       , ("M-S-r",           spawn "autopass")
       , ("M-n",             refresh)
       , ("M-m",             windows W.focusMaster)
@@ -152,10 +150,10 @@ main = do
       , ("M-g",             spawn "google-chrome-unstable")
       , ("M-f",             spawn "firefox")
       , ("M-S-l",           spawn "slock") -- Lock the screen
-      , ("M-S-q",           confirm ["-fn", "PragmataPro-13"] "Quit XMonad?" $ spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Try to Quit xmonad nicely
+      , ("M-S-q",           confirm ["-fn", "PragmataPro Liga-13"] "Quit XMonad?" $ spawn "~/.xmonad/scripts/quit-xmonad.sh") -- Try to Quit xmonad nicely
       , ("M-S-<Backspace>", spawn "/bin/systemctl suspend")
       , ("M-S-<Delete>",    spawn "/bin/systemctl hibernate")
-      , ("M-q",             confirm ["-fn", "PragmataPro-13"] "Recompile and restart XMonad?" $ spawn $ unlines [
+      , ("M-q",             confirm ["-fn", "PragmataPro Liga-13"] "Recompile and restart XMonad?" $ spawn $ unlines [
              "xmonad --recompile"
            , "if [ $? -eq 0 ]; then"
            , "    xmonad --restart"
@@ -230,7 +228,7 @@ myLayoutHook = avoidStruts
    $ onWorkspace "2" (Full ||| tiled ||| Mirror tiled)
    $ layouts
    where layouts = tiled ||| Mirror tiled ||| Full
-         tiled   = smartSpacing 5 $ gaps [(L,5),(R,5),(U,5),(D,5)] $ Tall nmaster delta ratio
+         tiled   = spacingRaw True (Border 2 2 2 2) True (Border 2 2 2 2) True $ Tall nmaster delta ratio  --  spacing 1 $ gaps [(L,1),(R,1),(U,1),(D,1)] $ Tall nmaster delta ratio
          nmaster = 1
          delta   = 3/100
          ratio   = 3/5
@@ -268,7 +266,7 @@ updateRedShift RedShiftEnabledMax = do
 updateRedShift RedShiftEnabledMin = do
   spawn "killall redshift; notify-send -r 14 'RedShift' 'ON High'; redshift -r -t 4000:3000"
 updateRedShift RedShiftDisabled = do
-  spawn "pkill -USR1 redshift; notify-send -r 14 'RedShift' 'OFF';"
+  spawn "killall redshift; redshift -x; notify-send -r 14 'RedShift' 'OFF';"
 
 
 solarizedBase03     = "#002b36"
